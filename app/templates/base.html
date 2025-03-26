@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Meal Planner</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+        header { background-color: #333; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: #fff; margin-left: 15px; text-decoration: none; }
+        main { padding: 30px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div><strong>Meal Planner</strong></div>
+        <nav>
+            <a href="/">Início</a>
+            <a href="/auth/login">Login</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

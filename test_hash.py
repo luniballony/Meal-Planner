@@ -1,0 +1,4 @@
+from werkzeug.security import check_password_hash
+
+hash_copiado = "scrypt:32768:8:1$zMGNdK0UMULQC0lw$112129592b831dd28375e9801290a6858c1a12bbc9bbb25bbd7212aca8f26e84145bb3ae4f9ec619a1c2f23c9409c4fa605e5402521e9e49c4cdcbce2b58f8b"
+print(check_password_hash(hash_copiado, "123456"))
