@@ -113,3 +113,4 @@ Depois, aceder a: [http://127.0.0.1:5000/auth/login](http://127.0.0.1:5000/auth/
 - Passwords encriptadas com hashing seguro  
 - Apenas email e nome do utilizador são guardados  
 - Dados pessoais minimizados e apagáveis a pedido  
+=======
