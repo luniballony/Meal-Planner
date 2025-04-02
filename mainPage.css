@@ -1,0 +1,49 @@
+body {
+  background-color: antiquewhite;
+}
+
+.page-title {
+  color: darkgreen ;
+  border: 20px brown;
+  font-family: "Rubik", sans-serif; 
+  font-weight: bold;
+  font-size: 60px;
+  position: relative;
+  text-align: center;
+}
+
+.main-page-buttons {
+  color: black;
+  background-color: antiquewhite;
+  opacity: 0.9;
+  border: none;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin: 10px;
+
+  font-family: "Rubik", sans-serif;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+button {
+  display: block;
+}
+
+.main-page-buttons:hover {
+  opacity: 0.8;
+  transition-duration: 0.5s
+}
+
+.get-started-button:hover {
+  background-color: darkred;
+}
+
+.login-button:hover {
+  background-color: darkgreen;
+}
+
+.new-account-button:hover {
+  background-color: darkgoldenrod;
+}
