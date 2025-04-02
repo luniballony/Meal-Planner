@@ -1,16 +1,26 @@
-body {
-  background-color: antiquewhite;
-}
-
 .page-title {
   color: darkgreen ;
   border: 20px brown;
+  position: relative;
+  margin: 110px 30px 30px 30px;
+
   font-family: "Rubik", sans-serif; 
   font-weight: bold;
   font-size: 60px;
-  position: relative;
   text-align: center;
 }
+
+.welcome {
+  color: black ;
+  border: 20px brown;
+  position: relative;
+  margin-bottom: 100px;
+
+  font-family: "Rubik", sans-serif; 
+  font-size: 30px;
+  text-align: center;
+}
+
 
 .main-page-buttons {
   color: black;
@@ -21,10 +31,16 @@ body {
   padding: 20px 30px;
   margin: 10px;
 
-  font-family: "Rubik", sans-serif;
+  font-family: "Rubik", sans-serif; /* */
   font-size: 20px;
   text-align: center;
   cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column; /* Keeps them stacked */
+  align-items: center; /* Centers them horizontally */
 }
 
 button {
@@ -46,4 +62,20 @@ button {
 
 .new-account-button:hover {
   background-color: darkgoldenrod;
+}
+
+
+.text-block {
+  background-color: antiquewhite;
+  opacity: 0.9;
+  border-radius: 20px;
+  padding: 15px 35px;
+  margin: 130px 20px;
+
+  font-family: "Rubik", sans-serif;
+}
+
+.text-block-title {
+  font-size: 30px;
+  font-weight: bold;
 }
