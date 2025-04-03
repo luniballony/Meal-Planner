@@ -18,9 +18,15 @@
       <button class="main-page-buttons get-started-button js-get-started-button
       ">Get Started</button>
   
-      <button class="main-page-buttons login-button js-login-button">Login</button>
+      <button 
+        class="main-page-buttons login-button js-login-button js-move-page-button"
+        data-page="loginPage.html"
+      >Login</button>
   
-      <button class="main-page-buttons  new-account-button js.create-new-account">Create A New Account</button>
+      <button 
+        class="main-page-buttons new-account-button js.create-new-account js-move-page-button"
+        data-page="createAccountPage.html"
+      >Create A New Account</button>
     </div>
     
 
@@ -37,8 +43,12 @@
 
 
     <div>
-      <p>version: 1.04</p>
+      <p>version: 1.05</p>
       <p>last upgrade: april 3th</p>
     </div>
+
+
+    <script src="../scripts/engine.js">
+    </script>
   </body>
 </html>
