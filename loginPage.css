@@ -1,0 +1,67 @@
+button {
+  font-family: "Rubik", sans-serif; 
+  font-size: 15px;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 10px;
+  opacity: 0.8;
+  padding: 15px;
+
+  cursor: pointer;
+}
+
+.go-back-button {
+  margin: 10px;
+}
+
+.login-text {
+  color: darkgreen ;
+  border: none;
+  position: relative;
+
+  font-family: "Rubik", sans-serif; 
+  font-weight: bold;
+  font-size: 60px;
+  text-align: center;
+}
+
+label {
+  font-family: "Rubik", sans-serif; 
+  font-size: 20px;
+  padding: 20px 0 5px 0;
+}
+
+
+input {
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  width: 300px;
+  height: 25px;
+}
+
+
+.login-button {
+  margin: 35px;
+  padding: 20px 40px;
+  background-color: darkgreen;
+  opacity: 0.85;
+  font-size: 20px;
+}
+
+
+.login-box {
+  background-color: antiquewhite;
+  opacity: 0.9;
+  border: none;
+  border-radius: 30px;
+
+  margin: 60px 10px 300px 10px;
+  
+
+  display: flex;
+  flex-direction: column; /* Keeps items stacked */
+  align-items: center; /* Centers items horizontally */
+  
+}
