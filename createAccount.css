@@ -15,10 +15,12 @@ button {
   margin: 10px;
 }
 
-.login-text {
+.create-new-account-text {
   color: darkgreen ;
   border: none;
   position: relative;
+  margin-bottom: 10px;
+  margin-top: 10px;
 
   font-family: "Rubik", sans-serif; 
   font-weight: bold;
@@ -42,8 +44,8 @@ input {
 }
 
 
-.login-button {
-  margin: 35px;
+.create-new-account-button {
+  margin: 20px;
   padding: 20px 40px;
   background-color: darkgreen;
   opacity: 0.85;
@@ -51,15 +53,15 @@ input {
 }
 
 
-.login-box {
+.create-new-account-box {
   background-color: antiquewhite;
   opacity: 0.9;
   border: none;
   border-radius: 30px;
 
-  max-width: 450px; /* defines max width of the box */
+  max-width: 500px; /* defines max width of the box */
   margin: auto; /* centers white box horizontally*/
-  
+  /* padding: 10px; */
 
   display: flex;
   flex-direction: column; /* Keeps items stacked */
