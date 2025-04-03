@@ -15,6 +15,12 @@ button {
   margin: 10px;
 }
 
+.go-back-button:hover {
+  opacity: 0.8;
+  transition-duration: 0.5s;
+  background-color: darkred;
+}
+
 .create-new-account-text {
   color: darkgreen ;
   border: none;
