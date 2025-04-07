@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Meal Planner{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <nav>
+          <div class="left nav-menu">
+            <a
+              href="{{ url_for('main.home') }}"
+              class="nav-item {% if request.endpoint == 'main.home' %}active{% endif %}"
+            >
+              <i class="fas fa-home"></i> Início
+            </a>
+
+            {% if session.get('user_id') %}
+            <a
+              href="{{ url_for('recipes.listar') }}"
+              class="nav-item {% if request.endpoint == 'recipes.listar' %}active{% endif %}"
+            >
+              <i class="fas fa-utensils"></i> Receitas
+            </a>
+
+            <a
+              href="{{ url_for('recipes.submeter') }}"
+              class="nav-item {% if request.endpoint == 'recipes.submeter' %}active{% endif %}"
+            >
+              <i class="fas fa-plus-circle"></i> Nova Receita
+            </a>
+
+            <a
+              href="{{ url_for('meal_plans.criar') }}"
+              class="nav-item {% if request.endpoint == 'meal_plans.criar' %}active{% endif %}"
+            >
+              <i class="fas fa-calendar-alt"></i> Plano Semanal
+            </a>
+
+            {% if session.get('user_nivel') == 3 %}
+            <div class="admin-section nav-menu">
+              <a
+                href="{{ url_for('admin.aprovar_receitas') }}"
+                class="nav-item {% if request.endpoint == 'admin.aprovar_receitas' %}active{% endif %}"
+              >
+                <i class="fas fa-check-circle"></i> Aprovar Receitas
+              </a>
+
+              <a
+                href="{{ url_for('admin.listar_receitas') }}"
+                class="nav-item {% if request.endpoint == 'admin.listar_receitas' %}active{% endif %}"
+              >
+                <i class="fas fa-list"></i> Gerir Receitas
+              </a>
+
+              <a
+                href="{{ url_for('admin.gerir_categorias') }}"
+                class="nav-item {% if request.endpoint == 'admin.gerir_categorias' %}active{% endif %}"
+              >
+                <i class="fas fa-tags"></i> Gerir Categorias
+              </a>
+
+              <a
+                href="{{ url_for('admin.listar_utilizadores') }}"
+                class="nav-item {% if request.endpoint == 'admin.listar_utilizadores' %}active{% endif %}"
+              >
+                <i class="fas fa-users"></i> Gerir Utilizadores
+              </a>
+            </div>
+            {% endif %} {% endif %}
+          </div>
+
+          <div class="right">
+            {% if session.get('user_id') %}
+            <div class="user-greeting">
+              <span>Olá, {{ session.get('user_nome') }}</span>
+              <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </div>
+            {% else %}
+            <div class="nav-menu">
+              <a
+                href="{{ url_for('auth.login') }}"
+                class="nav-item {% if request.endpoint == 'auth.login' %}active{% endif %}"
+              >
+                <i class="fas fa-sign-in-alt"></i> Login
+              </a>
+
+              <a
+                href="{{ url_for('auth.register') }}"
+                class="nav-item {% if request.endpoint == 'auth.register' %}active{% endif %}"
+              >
+                <i class="fas fa-user-plus"></i> Registar
+              </a>
+            </div>
+            {% endif %}
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer>
+      <div class="footer-container">
+        <p>Meal Planner © {{ 2025 }}</p>
+      </div>
+    </footer>
+  </body>
+</html>

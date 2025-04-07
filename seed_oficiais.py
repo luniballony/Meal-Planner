@@ -1,0 +1,286 @@
+from app import create_app
+from app.db import db
+from app.models.recipe import Recipe
+
+app = create_app()
+
+with app.app_context():
+    receitas = [
+        Recipe(
+            titulo='Panquecas com Fruta',
+            descricao='Panquecas integrais com fruta fresca.',
+            ingredientes='- 1 banana\n- 1 ovo\n- 3 colheres de sopa de aveia\n- Canela a gosto',
+            instrucoes='1. Esmaga a banana.\n2. Junta o ovo e a aveia.\n3. Cozinha numa frigideira antiaderente.\n4. Polvilha com canela.',
+            tempo_preparacao=15,
+            dificuldade=1,
+            categoria='vegetariano',
+            tags='pequeno almoço, saudável, rápido',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Salada de Quinoa com Frango',
+            descricao='Salada fresca e nutritiva com quinoa e frango grelhado.',
+            ingredientes='- 1 chávena de quinoa\n- 1 peito de frango grelhado\n- Pepino, tomate, cenoura\n- Azeite e limão',
+            instrucoes='1. Coze a quinoa.\n2. Grelha o frango e corta em tiras.\n3. Junta os legumes e tempera.',
+            tempo_preparacao=25,
+            dificuldade=2,
+            categoria='carne',
+            tags='almoço, leve, proteína',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Sopa de Legumes',
+            descricao='Sopa reconfortante com legumes frescos.',
+            ingredientes='- 2 batatas\n- 2 cenouras\n- 1 courgette\n- 1 cebola\n- Espinafres\n- Sal e azeite',
+            instrucoes='1. Corta os legumes e coze com água e sal.\n2. Tritura tudo.\n3. Junta espinafres e deixa ferver mais 5 minutos.',
+            tempo_preparacao=30,
+            dificuldade=1,
+            categoria='vegetariano',
+            tags='jantar, leve, saudável',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Iogurte com Granola e Fruta',
+            descricao='Rápido e nutritivo.',
+            ingredientes='- 1 iogurte natural\n- 2 colheres de sopa de granola\n- Fruta a gosto',
+            instrucoes='1. Coloca o iogurte numa taça.\n2. Adiciona granola e fruta fatiada.\n3. Mistura e serve.',
+            tempo_preparacao=5,
+            dificuldade=1,
+            categoria='saudável',
+            tags='pequeno almoço, rápido, leve',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Bacalhau à Brás',
+            descricao='Clássico prato português com bacalhau desfiado.',
+            ingredientes='- 400g de bacalhau desfiado\n- 200g de batata palha\n- 4 ovos\n- 1 cebola\n- Salsa',
+            instrucoes='1. Refoga a cebola em azeite.\n2. Junta o bacalhau e deixa cozinhar.\n3. Adiciona a batata palha.\n4. Envolve com ovos batidos e salsa.',
+            tempo_preparacao=35,
+            dificuldade=3,
+            categoria='peixe',
+            tags='almoço, tradicional, intenso',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Tortilha de Batata',
+            descricao='Tortilha espanhola simples e saborosa.',
+            ingredientes='- 4 batatas\n- 1 cebola\n- 5 ovos\n- Azeite\n- Sal',
+            instrucoes='1. Frita as batatas e cebola.\n2. Bate os ovos e mistura.\n3. Cozinha em lume médio até dourar dos dois lados.',
+            tempo_preparacao=25,
+            dificuldade=2,
+            categoria='vegetariano',
+            tags='jantar, clássico, reconfortante',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Papas de Aveia',
+            descricao='Aveia cremosa com banana e canela.',
+            ingredientes='- 1 chávena de aveia\n- 2 chávenas de leite\n- 1 banana\n- Canela a gosto',
+            instrucoes='1. Cozinha aveia com leite.\n2. Junta banana esmagada e canela.\n3. Serve quente.',
+            tempo_preparacao=10,
+            dificuldade=1,
+            categoria='vegetariano',
+            tags='pequeno almoço, saudável, quente',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Arroz de Pato',
+            descricao='Pato desfiado com arroz e chouriço no forno.',
+            ingredientes='- 1 pato\n- 2 chávenas de arroz\n- Chouriço\n- Louro e cravinho',
+            instrucoes='1. Coze o pato com especiarias.\n2. Desfia e reserva.\n3. Cozinha o arroz no caldo.\n4. Leva ao forno com chouriço às rodelas.',
+            tempo_preparacao=60,
+            dificuldade=3,
+            categoria='carne',
+            tags='almoço, tradicional, forno',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Douradinhos com Puré',
+            descricao='Jantar rápido com peixe e puré.',
+            ingredientes='- Douradinhos de peixe\n- 500g de batata\n- Leite e manteiga\n- Sal',
+            instrucoes='1. Leva os douradinhos ao forno.\n2. Coze batatas e reduz a puré com leite e manteiga.\n3. Serve com legumes.',
+            tempo_preparacao=30,
+            dificuldade=1,
+            categoria='peixe',
+            tags='jantar, simples, rápido',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Ovos Mexidos com Espinafres',
+            descricao='Fonte rápida de proteína.',
+            ingredientes='- 3 ovos\n- Espinafres frescos\n- Azeite\n- Sal',
+            instrucoes='1. Refoga os espinafres.\n2. Junta os ovos batidos.\n3. Mexe até ficarem cremosos.',
+            tempo_preparacao=8,
+            dificuldade=1,
+            categoria='vegetariano',
+            tags='pequeno almoço, verde, rápido',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Frango à Brás',
+            descricao='Versão de frango do clássico à Brás.',
+            ingredientes='- 300g de frango cozido\n- 200g de batata palha\n- 4 ovos\n- 1 cebola',
+            instrucoes='1. Refoga cebola e junta frango desfiado.\n2. Mistura batata palha e ovos batidos.\n3. Serve com salsa.',
+            tempo_preparacao=30,
+            dificuldade=2,
+            categoria='carne',
+            tags='almoço, criativa, tradicional',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Lasanha de Legumes',
+            descricao='Lasanha vegetariana no forno.',
+            ingredientes='- Placas de lasanha\n- Beringela, courgette, tomate\n- Queijo ralado\n- Molho de tomate',
+            instrucoes='1. Grelha os legumes.\n2. Monta a lasanha em camadas.\n3. Cobre com queijo e leva ao forno.',
+            tempo_preparacao=45,
+            dificuldade=2,
+            categoria='vegetariano',
+            tags='jantar, forno, leve',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Tapioca Recheada com Queijo',
+            descricao='Simples e sem glúten.',
+            ingredientes='- 2 colheres de sopa de goma de tapioca\n- Queijo e fiambre',
+            instrucoes='1. Cozinha a goma na frigideira.\n2. Recheia e dobra.\n3. Serve quente.',
+            tempo_preparacao=10,
+            dificuldade=1,
+            categoria='sem glúten',
+            tags='pequeno almoço, rápido, leve',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Hambúrguer de Grão',
+            descricao='Alternativa vegetariana ao hambúrguer.',
+            ingredientes='- 1 lata de grão\n- 1 cebola\n- Alho e salsa\n- Farinha de aveia',
+            instrucoes='1. Tritura os ingredientes.\n2. Molda hambúrgueres.\n3. Cozinha em frigideira antiaderente.',
+            tempo_preparacao=25,
+            dificuldade=2,
+            categoria='vegetariano',
+            tags='almoço, proteico, saudável',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Arroz de Marisco',
+            descricao='Delicioso e aromático.',
+            ingredientes='- Miolo de camarão e amêijoa\n- Arroz carolino\n- Cebola e alho\n- Coentros',
+            instrucoes='1. Refoga os temperos.\n2. Junta o marisco e o arroz.\n3. Adiciona caldo e deixa cozinhar.\n4. Finaliza com coentros.',
+            tempo_preparacao=40,
+            dificuldade=3,
+            categoria='peixe',
+            tags='jantar, marisco, intenso',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Smoothie Bowl',
+            descricao='Tigela fresca e nutritiva.',
+            ingredientes='- 1 banana\n- Frutos vermelhos\n- Iogurte natural\n- Toppings: granola, sementes',
+            instrucoes='1. Tritura banana e frutos vermelhos com iogurte.\n2. Verte numa taça.\n3. Decora com toppings.',
+            tempo_preparacao=5,
+            dificuldade=1,
+            categoria='saudável',
+            tags='pequeno almoço, fresco, verão',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Esparguete à Bolonhesa',
+            descricao='Massa clássica com carne.',
+            ingredientes='- 250g carne picada\n- 1 cebola\n- Molho de tomate\n- Esparguete',
+            instrucoes='1. Refoga carne com cebola.\n2. Junta o molho.\n3. Coze o esparguete e junta tudo.',
+            tempo_preparacao=30,
+            dificuldade=2,
+            categoria='carne',
+            tags='almoço, massa, clássico',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Salada Russa com Atum',
+            descricao='Prato frio e fácil.',
+            ingredientes='- 2 batatas\n- 1 cenoura\n- Ervilhas\n- 1 lata de atum\n- Maionese',
+            instrucoes='1. Coze os legumes.\n2. Junta o atum.\n3. Envolve tudo com maionese e serve fresco.',
+            tempo_preparacao=20,
+            dificuldade=1,
+            categoria='peixe',
+            tags='jantar, frio, simples',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Croissant com Queijo e Fiambre',
+            descricao='Pequeno-almoço no forno.',
+            ingredientes='- 1 croissant\n- Queijo e fiambre',
+            instrucoes='1. Recheia o croissant.\n2. Leva ao forno até o queijo derreter.\n3. Serve quente.',
+            tempo_preparacao=10,
+            dificuldade=1,
+            categoria='padaria',
+            tags='pequeno almoço, forno, rápido',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Empadão de Carne',
+            descricao='Camadas de carne e puré gratinadas.',
+            ingredientes='- 500g carne picada\n- Batatas\n- Leite, manteiga\n- Cebola e alho',
+            instrucoes='1. Refoga a carne.\n2. Faz o puré.\n3. Monta camadas e leva ao forno.',
+            tempo_preparacao=40,
+            dificuldade=2,
+            categoria='carne',
+            tags='almoço, forno, tradicional',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        ),
+        Recipe(
+            titulo='Pizza Caseira',
+            descricao='Base artesanal e recheio a gosto.',
+            ingredientes='- Massa de pizza\n- Molho de tomate\n- Queijo\n- Legumes ou fiambre',
+            instrucoes='1. Estende a massa.\n2. Recheia com os ingredientes.\n3. Leva ao forno até dourar.',
+            tempo_preparacao=30,
+            dificuldade=2,
+            categoria='vegetariano',
+            tags='jantar, pizza, forno',
+            publicada=True,
+            fonte="meal_planner",
+            utilizador_id=1
+        )
+    ]
+
+    db.session.add_all(receitas)
+    db.session.commit()
+    print("✅ 21 receitas oficiais inseridas com sucesso.")

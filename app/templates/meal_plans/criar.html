@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block title %}Criar Plano Semanal{% endblock %} {%
+block content %}
+<div class="meal-plan-container">
+  <div class="meal-plan-header">
+    <i class="fas fa-calendar-plus"></i>
+    <h2>Criar Plano Semanal</h2>
+    <p class="meal-plan-subtitle">
+      Organize suas refeições para a semana inteira
+    </p>
+  </div>
+
+  <div class="meal-plan-form-container">
+    <form method="POST" class="form">
+      {{ form.csrf_token }}
+
+      <div class="form-group date-picker-group">
+        <label for="{{ form.data_inicio.id }}" class="form-label"
+          >{{ form.data_inicio.label.text }}</label
+        >
+        {{ form.data_inicio(class="input-field date-picker") }}
+        <div class="date-picker-info">
+          <i class="fas fa-info-circle"></i>
+          <span>Selecione a data de início do seu plano semanal</span>
+        </div>
+      </div>
+
+      <div class="meal-plan-schedule">
+        <div class="schedule-header">
+          <i class="fas fa-utensils"></i>
+          <h3>Refeições por Dia</h3>
+        </div>
+
+        {% set dias = ['segunda', 'terça', 'quarta', 'quinta', 'sexta',
+        'sábado', 'domingo'] %} {% set refeicoes = ['pequeno_almoço', 'almoço',
+        'jantar'] %}
+
+        <div class="meal-plan-table-container">
+          <table class="meal-plan-table">
+            <thead>
+              <tr>
+                <th class="day-column">Dia</th>
+                {% for refeicao in refeicoes %}
+                <th>{{ refeicao.replace('_', ' ').title() }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for dia in dias %}
+              <tr>
+                <td class="day-cell">
+                  <div class="day-label">{{ dia.title() }}</div>
+                </td>
+                {% for refeicao in refeicoes %}
+                <td>
+                  <select name="{{ dia }}_{{ refeicao }}" class="meal-select">
+                    <option value="">-- Escolher receita --</option>
+                    {% for r in receitas %}
+                    <option value="{{ r.id }}">{{ r.titulo }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-info">
+        <i class="fas fa-lightbulb"></i>
+        <p>
+          Dica: Você pode deixar refeições em branco e preenchê-las mais tarde.
+        </p>
+      </div>
+
+      <div class="form-actions">
+        <a
+          href="{{ url_for('meal_plans.meus_planos') }}"
+          class="btn btn-outline"
+        >
+          <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

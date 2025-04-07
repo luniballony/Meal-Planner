@@ -1,0 +1,232 @@
+{% extends "base.html" %} {% block title %}Detalhes do Utilizador{% endblock %}
+{% block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-user"></i> Perfil do Utilizador</h2>
+
+  <div class="admin-content">
+    <div class="user-profile">
+      <div class="user-profile-header">
+        <div class="user-profile-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-profile-info">
+          <h3>{{ utilizador.nome }}</h3>
+          <div class="user-profile-badges">
+            {% if utilizador.nivel == 3 %}
+            <span class="badge badge-admin">Administrador</span>
+            {% elif utilizador.nivel == 2 %}
+            <span class="badge badge-premium">Premium</span>
+            {% else %}
+            <span class="badge badge-basic">Básico</span>
+            {% endif %} {% if utilizador.ativo %}
+            <span class="badge badge-success">Ativo</span>
+            {% else %}
+            <span class="badge badge-blocked">Bloqueado</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="user-profile-actions">
+          <a
+            href="{{ url_for('admin.editar_utilizador', id=utilizador.id) }}"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-edit"></i> Editar Perfil
+          </a>
+          <div class="dropdown">
+            <button class="btn btn-outline dropdown-toggle">
+              <i class="fas fa-ellipsis-v"></i> Mais Ações
+            </button>
+            <div class="dropdown-content">
+              <form
+                method="POST"
+                action="{{ url_for('admin.bloquear_utilizador', id=utilizador.id) }}"
+                class="inline-form"
+                onsubmit="return confirm('Tem certeza que deseja {{ 'desbloquear' if not utilizador.ativo else 'bloquear' }} este utilizador?');"
+              >
+                <input
+                  type="hidden"
+                  name="csrf_token"
+                  value="{{ csrf_token() }}"
+                />
+                <button type="submit" class="dropdown-item">
+                  {% if utilizador.ativo %}
+                  <i class="fas fa-lock"></i> Bloquear Conta {% else %}
+                  <i class="fas fa-lock-open"></i> Desbloquear Conta {% endif %}
+                </button>
+              </form>
+              <form
+                method="POST"
+                action="{{ url_for('admin.apagar_utilizador', id=utilizador.id) }}"
+                class="inline-form"
+                onsubmit="return confirm('Tem certeza que deseja eliminar este utilizador? Esta ação é irreversível.');"
+              >
+                <input
+                  type="hidden"
+                  name="csrf_token"
+                  value="{{ csrf_token() }}"
+                />
+                <button type="submit" class="dropdown-item danger">
+                  <i class="fas fa-trash"></i> Eliminar Conta
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-profile-sections">
+        <div class="profile-section">
+          <h4><i class="fas fa-id-card"></i> Informações Básicas</h4>
+          <div class="profile-info-grid">
+            <div class="profile-info-item">
+              <span class="info-label">Nome Completo</span>
+              <span class="info-value">{{ utilizador.nome }}</span>
+            </div>
+            <div class="profile-info-item">
+              <span class="info-label">Email</span>
+              <span class="info-value">{{ utilizador.email }}</span>
+            </div>
+            <div class="profile-info-item">
+              <span class="info-label">Nível de Acesso</span>
+              <span class="info-value">
+                {% if utilizador.nivel == 3 %} Administrador (Nível 3) {% elif
+                utilizador.nivel == 2 %} Premium (Nível 2) {% else %} Básico
+                (Nível 1) {% endif %}
+              </span>
+            </div>
+            <div class="profile-info-item">
+              <span class="info-label">Estado da Conta</span>
+              <span class="info-value">
+                {% if utilizador.ativo %}
+                <span class="status-active"
+                  ><i class="fas fa-check-circle"></i> Ativo</span
+                >
+                {% else %}
+                <span class="status-blocked"
+                  ><i class="fas fa-ban"></i> Bloqueado</span
+                >
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h4><i class="fas fa-history"></i> Histórico da Conta</h4>
+          <div class="profile-info-grid">
+            <div class="profile-info-item">
+              <span class="info-label">Data de Registo</span>
+              <span class="info-value"
+                >{{ utilizador.criado_em.strftime("%d/%m/%Y às %H:%M") }}</span
+              >
+            </div>
+            <div class="profile-info-item">
+              <span class="info-label">Último Login</span>
+              <span class="info-value">
+                {% if utilizador.ultimo_login %} {{
+                utilizador.ultimo_login.strftime("%d/%m/%Y às %H:%M") }} {% else
+                %} Nunca {% endif %}
+              </span>
+            </div>
+            <div class="profile-info-item">
+              <span class="info-label">Tempo como Membro</span>
+              <span class="info-value"
+                >{{ utilizador.criado_em|dias_desde }} dias</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h4><i class="fas fa-chart-bar"></i> Estatísticas</h4>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-value">{{ utilizador.receitas|length }}</div>
+              <div class="stat-label">Receitas</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">{{ utilizador.planos|length }}</div>
+              <div class="stat-label">Planos de Refeição</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">{{ utilizador.comentarios|length }}</div>
+              <div class="stat-label">Comentários</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">{{ utilizador.favoritos|length }}</div>
+              <div class="stat-label">Favoritos</div>
+            </div>
+          </div>
+        </div>
+
+        {% if utilizador.receitas %}
+        <div class="profile-section">
+          <h4><i class="fas fa-utensils"></i> Receitas Recentes</h4>
+          <div class="mini-recipes-grid">
+            {% for receita in utilizador.receitas[:4] %}
+            <div class="mini-recipe-card">
+              <h5>{{ receita.titulo }}</h5>
+              <div class="mini-recipe-info">
+                <span
+                  ><i class="fas fa-calendar-alt"></i> {{
+                  receita.data_submetida.strftime("%d/%m/%Y") }}</span
+                >
+                <span>
+                  {% if receita.aprovada %} {% if receita.publicada %}
+                  <i class="fas fa-globe"></i> Pública {% else %}
+                  <i class="fas fa-lock"></i> Privada {% endif %} {% else %}
+                  <i class="fas fa-clock"></i> Pendente {% endif %}
+                </span>
+              </div>
+              <a
+                href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+                class="btn btn-small btn-outline"
+                >Ver Receita</a
+              >
+            </div>
+            {% endfor %}
+          </div>
+          {% if utilizador.receitas|length > 4 %}
+          <div class="view-all">
+            <a
+              href="{{ url_for('admin.listar_receitas') }}?autor={{ utilizador.id }}"
+              class="btn btn-outline"
+            >
+              Ver todas as {{ utilizador.receitas|length }} receitas
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="profile-footer">
+        <a
+          href="{{ url_for('admin.listar_utilizadores') }}"
+          class="btn btn-outline"
+        >
+          <i class="fas fa-arrow-left"></i> Voltar à Lista de Utilizadores
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Dropdown para ações
+  document.querySelectorAll(".dropdown-toggle").forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const dropdown = this.nextElementSibling;
+      dropdown.classList.toggle("show");
+    });
+  });
+
+  // Fechar dropdown ao clicar fora
+  window.addEventListener("click", function () {
+    document.querySelectorAll(".dropdown-content").forEach((dropdown) => {
+      dropdown.classList.remove("show");
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends "base.html" %} {% block title %}Gerir Receitas{% endblock %} {% block
+content %}
+<div class="admin-container">
+  <h2><i class="fas fa-utensils"></i> Todas as Receitas</h2>
+
+  <div class="admin-content">
+    <div class="admin-actions">
+      <form
+        method="GET"
+        action="{{ url_for('admin.listar_receitas') }}"
+        class="search-form"
+      >
+        <div class="search-container">
+          <input
+            type="text"
+            name="search"
+            class="input-field search-input"
+            placeholder="Pesquisar por título, autor ou categoria..."
+            value="{{ request.args.get('search', '') }}"
+          />
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Pesquisar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% if receitas %}
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Estado</th>
+            <th>Data</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for receita in receitas %}
+          <tr>
+            <td>{{ receita.titulo }}</td>
+            <td>
+              {{ receita.autor.nome if receita.autor else 'Desconhecido' }}
+            </td>
+            <td>
+              {% if receita.aprovada %}
+              <span class="badge badge-admin">Aprovada</span>
+              {% if receita.publicada %}
+              <span class="badge badge-premium">Publicada</span>
+              {% else %}
+              <span class="badge badge-basic">Privada</span>
+              {% endif %} {% else %}
+              <span class="badge badge-warning">Pendente</span>
+              {% endif %}
+            </td>
+            <td>{{ receita.data_submetida.strftime('%d/%m/%Y') }}</td>
+            <td class="action-buttons">
+              <a
+                href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+                class="btn btn-small btn-info"
+                title="Visualizar"
+              >
+                <i class="fas fa-eye"></i>
+              </a>
+              <a
+                href="{{ url_for('admin.editar_receita', receita_id=receita.id) }}"
+                class="btn btn-small btn-warning"
+                title="Editar"
+              >
+                <i class="fas fa-edit"></i>
+              </a>
+              <button
+                type="button"
+                class="btn btn-small btn-danger"
+                onclick="confirmarExclusao('{{ receita.id }}', '{{ receita.titulo }}')"
+                title="Apagar"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+              {% if not receita.aprovada %}
+              <a
+                href="{{ url_for('admin.aprovar_receita_admin', receita_id=receita.id) }}"
+                class="btn btn-small btn-success"
+                title="Aprovar"
+              >
+                <i class="fas fa-check"></i>
+              </a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modais de confirmação para cada receita -->
+    {% for receita in receitas %}
+    <div id="modal-{{ receita.id }}" class="modal">
+      <div class="modal-content">
+        <h3>Confirmar exclusão</h3>
+        <p>
+          Tem certeza que deseja apagar a receita
+          <strong>{{ receita.titulo }}</strong>?
+        </p>
+        <div class="modal-actions">
+          <button
+            onclick="fecharModal('{{ receita.id }}')"
+            class="btn btn-secondary"
+          >
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+          <form
+            action="{{ url_for('admin.apagar_receita', receita_id=receita.id) }}"
+            method="POST"
+            class="inline-form"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-danger">
+              <i class="fas fa-trash"></i> Apagar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Paginação -->
+    {% if pagination.pages > 1 %}
+    <div class="pagination">
+      {% if pagination.has_prev %}
+      <a
+        href="{{ url_for('admin.listar_receitas', page=pagination.prev_num, search=request.args.get('search', '')) }}"
+        class="pagination-item"
+      >
+        <i class="fas fa-chevron-left"></i> Anterior
+      </a>
+      {% else %}
+      <span class="pagination-item disabled">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </span>
+      {% endif %} {% for page in pagination.iter_pages() %} {% if page %} {% if
+      page != pagination.page %}
+      <a
+        href="{{ url_for('admin.listar_receitas', page=page, search=request.args.get('search', '')) }}"
+        class="pagination-item"
+      >
+        {{ page }}
+      </a>
+      {% else %}
+      <span class="pagination-item active">{{ page }}</span>
+      {% endif %} {% else %}
+      <span class="pagination-item ellipsis">...</span>
+      {% endif %} {% endfor %} {% if pagination.has_next %}
+      <a
+        href="{{ url_for('admin.listar_receitas', page=pagination.next_num, search=request.args.get('search', '')) }}"
+        class="pagination-item"
+      >
+        Próximo <i class="fas fa-chevron-right"></i>
+      </a>
+      {% else %}
+      <span class="pagination-item disabled">
+        Próximo <i class="fas fa-chevron-right"></i>
+      </span>
+      {% endif %}
+    </div>
+    {% endif %} {% else %}
+    <div class="empty-state">
+      <i class="fas fa-search empty-icon"></i>
+      <p>Nenhuma receita encontrada.</p>
+      {% if request.args.get('search') %}
+      <p class="empty-subtitle">
+        Tente usar termos de pesquisa diferentes ou
+        <a href="{{ url_for('admin.listar_receitas') }}"
+          >ver todas as receitas</a
+        >.
+      </p>
+      {% else %}
+      <p class="empty-subtitle">Ainda não há receitas no sistema.</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function confirmarExclusao(id, titulo) {
+    document.getElementById("modal-" + id).style.display = "block";
+  }
+
+  function fecharModal(id) {
+    document.getElementById("modal-" + id).style.display = "none";
+  }
+
+  // Fechar modal ao clicar fora dele
+  window.onclick = function (event) {
+    var modals = document.querySelectorAll(".modal");
+    for (var i = 0; i < modals.length; i++) {
+      if (event.target == modals[i]) {
+        modals[i].style.display = "none";
+      }
+    }
+  };
+</script>
+{% endblock %}

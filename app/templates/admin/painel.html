@@ -1,0 +1,179 @@
+{% extends "base.html" %} {% block title %}Painel de Administração{% endblock %}
+{% block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-tachometer-alt"></i> Painel de Administração</h2>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.total_users }}</h3>
+        <p>Utilizadores</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-utensils"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.total_recipes }}</h3>
+        <p>Receitas</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon pending">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.pending_recipes }}</h3>
+        <p>Receitas Pendentes</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-tags"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.total_categories }}</h3>
+        <p>Categorias</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-utensils"></i>
+        <h3>Gestão de Receitas</h3>
+      </div>
+      <div class="admin-card-content">
+        <p>
+          Gerencie todas as receitas do sistema, aprove receitas pendentes e
+          organize o conteúdo.
+        </p>
+        <div class="admin-card-actions">
+          <a
+            href="{{ url_for('admin.listar_receitas') }}"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-list"></i> Listar Receitas
+          </a>
+          <a
+            href="{{ url_for('admin.aprovar_receitas') }}"
+            class="btn {% if stats.pending_recipes > 0 %}btn-warning{% else %}btn-outline{% endif %}"
+          >
+            <i class="fas fa-check-circle"></i> Aprovar Receitas {% if
+            stats.pending_recipes > 0 %}
+            <span class="notification-badge">{{ stats.pending_recipes }}</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-tags"></i>
+        <h3>Gestão de Categorias</h3>
+      </div>
+      <div class="admin-card-content">
+        <p>
+          Crie e organize categorias para classificar as receitas e facilitar a
+          navegação dos utilizadores.
+        </p>
+        <div class="admin-card-actions">
+          <a
+            href="{{ url_for('admin.gerir_categorias') }}"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-folder"></i> Gerir Categorias
+          </a>
+          <a
+            href="{{ url_for('admin.criar_categoria_admin') }}"
+            class="btn btn-outline"
+          >
+            <i class="fas fa-plus"></i> Nova Categoria
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-users"></i>
+        <h3>Gestão de Utilizadores</h3>
+      </div>
+      <div class="admin-card-content">
+        <p>
+          Gerencie contas de utilizadores, altere níveis de acesso e monitore a
+          atividade.
+        </p>
+        <div class="admin-card-actions">
+          <a
+            href="{{ url_for('admin.listar_utilizadores') }}"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-user-friends"></i> Listar Utilizadores
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-calendar-alt"></i>
+        <h3>Planos de Refeição</h3>
+      </div>
+      <div class="admin-card-content">
+        <p>
+          Visualize e gerencie os planos de refeição criados pelos utilizadores.
+        </p>
+        <div class="admin-card-actions">
+          <a href="{{ url_for('meal_plans.listar') }}" class="btn btn-primary">
+            <i class="fas fa-list"></i> Ver Planos
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-recent">
+    <div class="admin-recent-header">
+      <h3><i class="fas fa-history"></i> Atividade Recente</h3>
+    </div>
+
+    {% if recent_activity %}
+    <ul class="activity-list">
+      {% for activity in recent_activity %}
+      <li class="activity-item">
+        <div class="activity-icon">
+          {% if activity.type == 'recipe' %}
+          <i class="fas fa-utensils"></i>
+          {% elif activity.type == 'user' %}
+          <i class="fas fa-user"></i>
+          {% elif activity.type == 'category' %}
+          <i class="fas fa-tag"></i>
+          {% else %}
+          <i class="fas fa-bell"></i>
+          {% endif %}
+        </div>
+        <div class="activity-content">
+          <p>{{ activity.description }}</p>
+          <span class="activity-time">{{ activity.time }}</span>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-activity">
+      <p>Nenhuma atividade recente para mostrar.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

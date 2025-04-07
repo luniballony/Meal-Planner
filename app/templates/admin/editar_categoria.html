@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block title %}Editar Categoria{% endblock %} {%
+block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-edit"></i> Editar Categoria</h2>
+
+  <div class="admin-content">
+    <div class="form-container">
+      <div class="categoria-edit-header">
+        <div class="categoria-badge">
+          <i class="fas fa-folder"></i>
+          <span>{{ categoria.nome }}</span>
+        </div>
+
+        {% if categoria.receitas|length > 0 %}
+        <div class="categoria-stats">
+          <i class="fas fa-utensils"></i>
+          <span
+            >{{ categoria.receitas|length }} receita(s) nesta categoria</span
+          >
+        </div>
+        {% endif %}
+      </div>
+
+      <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          <label for="{{ form.nome.id }}" class="form-label"
+            >{{ form.nome.label.text }}</label
+          >
+          {{ form.nome(size=40, class="input-field", placeholder="Nome da
+          categoria") }} {% for error in form.nome.errors %}
+          <small class="error-text">{{ error }}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-info">
+          <i class="fas fa-info-circle"></i>
+          <p>
+            Alterar o nome da categoria irá atualizar todas as receitas
+            associadas automaticamente.
+          </p>
+        </div>
+
+        <div class="form-actions">
+          <a
+            href="{{ url_for('admin.gerir_categorias') }}"
+            class="btn btn-outline"
+          >
+            <i class="fas fa-arrow-left"></i> Voltar
+          </a>
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

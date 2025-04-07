@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block title %}Receitas Pendentes{% endblock %} {%
+block content %}
+<h2>📋 Receitas Pendentes</h2>
+{% if receitas %}
+<ul class="lista-planos">
+  {% for receita in receitas %}
+  <li class="card">
+    <strong>{{ receita.titulo }}</strong>
+    <div class="botoes">
+      <a class="btn btn-primary" href="#">✔️ Aprovar</a>
+      <a class="btn btn-danger" href="#">❌ Rejeitar</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Nenhuma receita pendente.</p>
+{% endif %} {% endblock %}

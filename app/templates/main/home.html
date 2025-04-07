@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% block title %}Início{% endblock %} {% block content
+%}
+<div class="home-dashboard">
+  <div class="welcome-section">
+    <div class="welcome-header">
+      <div class="welcome-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="welcome-text">
+        <h2>Olá, {{ nome }} 👋</h2>
+        <p>
+          Bem-vindo(a) ao <strong>Meal Planner</strong>! O que gostarias de
+          fazer hoje?
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-actions">
+    <div class="action-card">
+      <div class="action-icon recipes">
+        <i class="fas fa-book"></i>
+      </div>
+      <h3>Receitas</h3>
+      <p>Explore e descubra novas receitas para experimentar</p>
+      <div class="action-buttons">
+        <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary">
+          Ver receitas
+        </a>
+        <a href="{{ url_for('recipes.submeter') }}" class="btn btn-outline">
+          Submeter nova
+        </a>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon meal-plans">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <h3>Planos de Refeição</h3>
+      <p>Organize suas refeições semanais de forma prática</p>
+      <div class="action-buttons">
+        <a href="{{ url_for('meal_plans.criar') }}" class="btn btn-primary">
+          Criar plano
+        </a>
+        <a
+          href="{{ url_for('meal_plans.meus_planos') }}"
+          class="btn btn-outline"
+        >
+          Ver meus planos
+        </a>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon categories">
+        <i class="fas fa-tags"></i>
+      </div>
+      <h3>Categorias</h3>
+      <p>Navegue pelas receitas organizadas por categoria</p>
+      <div class="action-buttons">
+        <a href="{{ url_for('categories.index') }}" class="btn btn-primary">
+          Explorar categorias
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="logout-section">
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
+      <i class="fas fa-sign-out-alt"></i> Terminar sessão
+    </a>
+  </div>
+</div>
+{% endblock %}
