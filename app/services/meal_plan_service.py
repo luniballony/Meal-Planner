@@ -2,6 +2,7 @@ from app.models.meal_plan import MealPlan, MealEntry
 from app.db import db
 from flask import render_template
 import pdfkit
+import os
 
 
 def criar_plano_semanal(utilizador_id, data_inicio, refeicoes_selecionadas):
@@ -60,12 +61,17 @@ def eliminar_plano(plano_id):
 
 
 def exportar_plano_para_pdf(plano):
-    config = pdfkit.configuration(
-        wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
-    )
+    # Configuração diferente para Railway vs. desenvolvimento local
+    if os.getenv("RAILWAY_ENVIRONMENT"):
+        # No Railway, o wkhtmltopdf estará em um caminho diferente
+        config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
+    else:
+        # Configuração local
+        config = pdfkit.configuration(
+            wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+        )
 
     html = render_template("meal_plans/ver_pdf.html", plano=plano)
-
     options = {
         "enable-local-file-access": None,
         "load-error-handling": "ignore",
