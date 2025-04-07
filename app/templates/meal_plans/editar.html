@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Editar Plano Semanal{% endblock %}
+{% block content %}
+<div class="meal-plan-container">
+  <div class="meal-plan-header">
+    <i class="fas fa-calendar-edit"></i>
+    <h2>Editar Plano Semanal</h2>
+    <p class="meal-plan-subtitle">Atualize as refeições do seu plano semanal</p>
+  </div>
+
+  <div class="meal-plan-form-container">
+    <form method="POST" class="form">
+      {{ form.csrf_token }}
+
+      <div class="form-group date-picker-group">
+        <label for="{{ form.data_inicio.id }}" class="form-label">{{ form.data_inicio.label.text }}</label>
+        {{ form.data_inicio(value=plano.data_inicio, class="input-field date-picker") }}
+        <div class="date-picker-info">
+          <i class="fas fa-info-circle"></i>
+          <span>Data de início do seu plano semanal</span>
+        </div>
+      </div>
+
+      <div class="meal-plan-schedule">
+        <div class="schedule-header">
+          <i class="fas fa-utensils"></i>
+          <h3>Refeições por Dia</h3>
+        </div>
+
+        {% set dias_pt = {
+          "Monday": "segunda-feira",
+          "Tuesday": "terça-feira",
+          "Wednesday": "quarta-feira",
+          "Thursday": "quinta-feira",
+          "Friday": "sexta-feira",
+          "Saturday": "sábado",
+          "Sunday": "domingo"
+        } %}
+
+        {% set entradas_por_data = {} %}
+        {% for entrada in plano.refeicoes %}
+          {% set chave = entrada.data_refeicao.strftime('%Y-%m-%d') %}
+          {% if chave not in entradas_por_data %}
+            {% set _ = entradas_por_data.update({chave: {}}) %}
+          {% endif %}
+          {% set _ = entradas_por_data[chave].update({entrada.refeicao_tipo: entrada.receita_id}) %}
+        {% endfor %}
+
+        {% set datas_ordenadas = entradas_por_data.keys() | sort %}
+
+        <div class="meal-plan-table-container">
+          <table class="meal-plan-table">
+            <thead>
+              <tr>
+                <th class="day-column">Data</th>
+                <th>Pequeno Almoço</th>
+                <th>Almoço</th>
+                <th>Jantar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data_str in datas_ordenadas %}
+              <tr>
+                {% set data_parts = data_str.split('-') %}
+                {% set data_obj = namespace(obj=datetime(data_parts[0]|int, data_parts[1]|int, data_parts[2]|int)) %}
+                <td class="day-cell">
+                  <div class="day-label">{{ dias_pt[data_obj.obj.strftime('%A')] | capitalize }}</div>
+                  <div class="date-label">{{ data_obj.obj.strftime('%d/%m/%Y') }}</div>
+                </td>
+                {% for refeicao in ['pequeno_almoço', 'almoço', 'jantar'] %}
+                <td>
+                  <select name="{{ data_str }}_{{ refeicao }}" class="meal-select">
+                    <option value="">-- Escolher receita --</option>
+                    {% for r in receitas %}
+                      {% set selecionada = entradas_por_data[data_str].get(refeicao) %}
+                      <option value="{{ r.id }}" {% if selecionada == r.id %}selected{% endif %}>{{ r.titulo }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-info">
+        <i class="fas fa-lightbulb"></i>
+        <p>Dica: Você pode deixar refeições em branco se não quiser planejar todas as refeições.</p>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('meal_plans.meus_planos') }}" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Atualizar Plano
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .date-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 5px;
+  }
+</style>
+{% endblock %}

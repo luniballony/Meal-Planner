@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block title %}Submeter Receita{% endblock %} {%
+block content %}
+<div class="recipe-submit-container">
+  <div class="recipe-submit-header">
+    <i class="fas fa-utensils"></i>
+    <h2>Submeter Nova Receita</h2>
+    <p class="submit-subtitle">Compartilhe sua receita com a comunidade</p>
+  </div>
+
+  <div class="recipe-form-container">
+    <div class="form-info-panel">
+      <div class="info-section">
+        <h3><i class="fas fa-info-circle"></i> Dicas para uma boa receita</h3>
+        <ul class="info-list">
+          <li><strong>Seja específico</strong> com as quantidades e medidas</li>
+          <li><strong>Detalhe as instruções</strong> passo a passo</li>
+          <li>Inclua <strong>tempo de preparação</strong> realista</li>
+          <li>
+            Adicione <strong>tags relevantes</strong> para facilitar a busca
+          </li>
+          <li>
+            Escolha a <strong>categoria adequada</strong> para sua receita
+          </li>
+        </ul>
+      </div>
+
+      <div class="info-section">
+        <h3><i class="fas fa-check-circle"></i> Processo de aprovação</h3>
+        <p>
+          Todas as receitas passam por um processo de aprovação antes de serem
+          publicadas. Nossos administradores verificarão o conteúdo e aprovarão
+          sua receita em breve.
+        </p>
+      </div>
+    </div>
+
+    <form method="POST" class="recipe-form">
+      {{ form.csrf_token }}
+
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="fas fa-file-alt"></i> Informações Básicas
+        </h3>
+
+        <div class="form-group">
+          {{ form.titulo.label(class="form-label") }} {{ form.titulo(size=40,
+          class="input-field", placeholder="Ex: Bolo de Chocolate Caseiro") }}
+          {% if form.titulo.errors %}
+          <div class="form-errors">
+            {% for error in form.titulo.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.descricao.label(class="form-label") }} {{
+          form.descricao(rows=3, cols=40, class="input-field", placeholder="Uma
+          breve descrição da sua receita...") }} {% if form.descricao.errors %}
+          <div class="form-errors">
+            {% for error in form.descricao.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            {{ form.tempo_preparacao.label(class="form-label") }}
+            <div class="input-with-addon">
+              {{ form.tempo_preparacao(class="input-field", placeholder="Ex:
+              45") }}
+              <span class="input-addon">minutos</span>
+            </div>
+            {% if form.tempo_preparacao.errors %}
+            <div class="form-errors">
+              {% for error in form.tempo_preparacao.errors %}
+              <span class="error-message">{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="form-group half-width">
+            {{ form.dificuldade.label(class="form-label") }} {{
+            form.dificuldade(class="input-field") }} {% if
+            form.dificuldade.errors %}
+            <div class="form-errors">
+              {% for error in form.dificuldade.errors %}
+              <span class="error-message">{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="fas fa-list"></i> Ingredientes e Instruções
+        </h3>
+
+        <div class="form-group">
+          {{ form.ingredientes.label(class="form-label") }}
+          <div class="input-help">
+            Liste cada ingrediente em uma linha separada, começando com um traço
+            (-)
+          </div>
+          {{ form.ingredientes(rows=5, cols=40, class="input-field",
+          placeholder="- 2 ovos\n- 100ml de leite\n- 200g de farinha") }} {% if
+          form.ingredientes.errors %}
+          <div class="form-errors">
+            {% for error in form.ingredientes.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.instrucoes.label(class="form-label") }}
+          <div class="input-help">
+            Descreva o passo a passo de preparação da receita
+          </div>
+          {{ form.instrucoes(rows=5, cols=40, class="input-field",
+          placeholder="1. Pré-aqueça o forno a 180°C\n2. Misture os ingredientes
+          secos...") }} {% if form.instrucoes.errors %}
+          <div class="form-errors">
+            {% for error in form.instrucoes.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title"><i class="fas fa-tags"></i> Categorização</h3>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            {{ form.categoria_id.label(class="form-label") }} {{
+            form.categoria_id(class="input-field") }} {% if
+            form.categoria_id.errors %}
+            <div class="form-errors">
+              {% for error in form.categoria_id.errors %}
+              <span class="error-message">{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="form-group half-width">
+            {{ form.tags.label(class="form-label") }}
+            <div class="input-help">Separe as tags por vírgulas</div>
+            {{ form.tags(class="input-field", placeholder="Ex: saudável, rápido,
+            vegetariano") }} {% if form.tags.errors %}
+            <div class="form-errors">
+              {% for error in form.tags.errors %}
+              <span class="error-message">{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-container">
+            {{ form.publica() }}
+            <span class="checkbox-label">{{ form.publica.label.text }}</span>
+          </label>
+          <div class="input-help">
+            Marque esta opção se deseja que sua receita seja visível para todos
+            os usuários
+          </div>
+          {% if form.publica.errors %}
+          <div class="form-errors">
+            {% for error in form.publica.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-outline"
+          onclick="window.history.back()"
+        >
+          <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

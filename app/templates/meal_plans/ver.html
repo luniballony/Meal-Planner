@@ -1,0 +1,169 @@
+{% extends "base.html" %} {% block title %}Plano Semanal{% endblock %} {% block
+content %}
+<div class="meal-plan-view-container">
+  <div class="meal-plan-view-header">
+    <div class="header-content">
+      <i class="fas fa-calendar-week"></i>
+      <div class="header-text">
+        <h2>Plano Semanal</h2>
+        <p class="plan-date">
+          Início: {{ plano.data_inicio.strftime('%d/%m/%Y') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="meal-plan-actions">
+      <a
+        href="{{ url_for('meal_plans.editar_plano', plano_id=plano.id) }}"
+        class="btn btn-warning"
+      >
+        <i class="fas fa-edit"></i> Editar
+      </a>
+      <a
+        href="{{ url_for('meal_plans.exportar_pdf', plano_id=plano.id) }}"
+        class="btn btn-info"
+      >
+        <i class="fas fa-file-pdf"></i> Exportar PDF
+      </a>
+      <button onclick="window.print()" class="btn btn-outline">
+        <i class="fas fa-print"></i> Imprimir
+      </button>
+      {% if form_apagar %}
+      <form
+        method="POST"
+        action="{{ url_for('meal_plans.apagar_plano', plano_id=plano.id) }}"
+        class="inline-form"
+        onsubmit="return confirm('Tens a certeza que queres apagar este plano?');"
+      >
+        {{ form_apagar.hidden_tag() }}
+        <button type="submit" class="btn btn-danger">
+          <i class="fas fa-trash"></i> Apagar
+        </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="meal-plan-summary">
+    <div class="summary-item">
+      <i class="fas fa-calendar-day"></i>
+      <span
+        >{{
+        plano.refeicoes|selectattr('data_refeicao')|map(attribute='data_refeicao')|unique|list|length
+        }} dias</span
+      >
+    </div>
+    <div class="summary-item">
+      <i class="fas fa-utensils"></i>
+      <span>{{ plano.refeicoes|length }} refeições</span>
+    </div>
+    <div class="summary-item">
+      <i class="fas fa-clock"></i>
+      <span
+        >{{ plano.data_inicio.strftime('%d/%m') }} - {{ (plano.data_inicio +
+        timedelta(days=6)).strftime('%d/%m/%Y') }}</span
+      >
+    </div>
+  </div>
+
+  {% set dias_pt = { "Monday": "segunda-feira", "Tuesday": "terça-feira",
+  "Wednesday": "quarta-feira", "Thursday": "quinta-feira", "Friday":
+  "sexta-feira", "Saturday": "sábado", "Sunday": "domingo" } %} {% set
+  refeicoes_ordenadas = ["pequeno_almoço", "almoço", "jantar"] %}
+
+  <!-- Organizar entradas por dia e tipo de refeição -->
+  {% set entradas_por_dia = {} %} {% for entrada in plano.refeicoes %} {% set
+  dia = entrada.data_refeicao %} {% if dia not in entradas_por_dia %} {% set _ =
+  entradas_por_dia.update({dia: {}}) %} {% endif %} {% set _ =
+  entradas_por_dia[dia].update({entrada.refeicao_tipo: entrada}) %} {% endfor %}
+
+  <!-- Gerar dias do plano -->
+  {% set data_atual = plano.data_inicio %} {% for i in range(7) %} {% set dia =
+  data_atual + timedelta(days=i) %}
+  <div class="meal-plan-day">
+    <div class="day-header">
+      <div class="day-name">
+        <i class="fas fa-calendar-day"></i>
+        <h3>{{ dias_pt[dia.strftime('%A')] | capitalize }}</h3>
+      </div>
+      <div class="day-date">{{ dia.strftime('%d/%m/%Y') }}</div>
+    </div>
+
+    <div class="meals-container">
+      {% for tipo in refeicoes_ordenadas %}
+      <div
+        class="meal-card {% if dia not in entradas_por_dia or tipo not in entradas_por_dia[dia] %}empty-meal{% endif %}"
+      >
+        <div class="meal-type">
+          <i class="fas fa-utensil-spoon"></i>
+          <span>{{ tipo.replace("_", " ").capitalize() }}</span>
+        </div>
+
+        {% if dia in entradas_por_dia and tipo in entradas_por_dia[dia] %} {%
+        set entrada = entradas_por_dia[dia][tipo] %}
+        <div class="meal-recipe">
+          <a
+            href="{{ url_for('recipes.ver', receita_id=entrada.receita.id) }}"
+            class="recipe-link"
+          >
+            <div class="recipe-title">{{ entrada.receita.titulo }}</div>
+            <div class="recipe-meta">
+              {% if entrada.receita.tempo_preparacao %}
+              <span class="meta-item"
+                ><i class="fas fa-clock"></i> {{
+                entrada.receita.tempo_preparacao }} min</span
+              >
+              {% endif %} {% if entrada.receita.dificuldade %}
+              <span class="meta-item"
+                ><i class="fas fa-chart-line"></i> {{
+                entrada.receita.dificuldade }}</span
+              >
+              {% endif %}
+            </div>
+          </a>
+        </div>
+        {% else %}
+        <div class="meal-recipe empty">
+          <span class="empty-text">Nenhuma receita selecionada</span>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="meal-plan-view-footer">
+    <a href="{{ url_for('meal_plans.meus_planos') }}" class="btn btn-primary">
+      <i class="fas fa-arrow-left"></i> Voltar aos planos
+    </a>
+  </div>
+</div>
+
+<style media="print">
+  .meal-plan-actions,
+  .meal-plan-view-footer,
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  .meal-plan-view-container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .meal-plan-day {
+    page-break-inside: avoid;
+  }
+
+  body {
+    font-size: 12pt;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% block title %}Meus Planos Semanais{% endblock %} {%
+block content %}
+<div class="meal-plans-container">
+  <div class="meal-plans-header">
+    <i class="fas fa-calendar-alt"></i>
+    <h2>Meus Planos Semanais</h2>
+    <p class="meal-plans-subtitle">
+      Gerencie seus planos de refeições semanais
+    </p>
+  </div>
+
+  <div class="meal-plans-actions">
+    <a href="{{ url_for('meal_plans.criar') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Criar Novo Plano
+    </a>
+  </div>
+
+  {% if planos %}
+  <div class="meal-plans-grid">
+    {% for plano in planos %}
+    <div class="meal-plan-card">
+      <div class="meal-plan-card-header">
+        <div class="meal-plan-date">
+          <i class="fas fa-calendar-week"></i>
+          <span>Semana de {{ plano.data_inicio.strftime('%d/%m/%Y') }}</span>
+        </div>
+        <div class="meal-plan-status">
+          {% set hoje = now().date() %} {% set data_fim = plano.data_inicio +
+          timedelta(days=6) %} {% if hoje < plano.data_inicio %}
+          <span class="status-badge upcoming">Próximo</span>
+          {% elif hoje > data_fim %}
+          <span class="status-badge past">Passado</span>
+          {% else %}
+          <span class="status-badge active">Atual</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="meal-plan-card-content">
+        <div class="meal-plan-info">
+          <div class="info-item">
+            <i class="fas fa-utensils"></i>
+            <span>{{ plano.refeicoes|length }} refeições planejadas</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar-day"></i>
+            <span
+              >{{ plano.data_inicio.strftime('%d/%m') }} até {{
+              (plano.data_inicio + timedelta(days=6)).strftime('%d/%m/%Y')
+              }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="meal-plan-card-actions">
+        <a
+          href="{{ url_for('meal_plans.ver', plano_id=plano.id) }}"
+          class="btn btn-info btn-small"
+        >
+          <i class="fas fa-eye"></i> Ver
+        </a>
+        <a
+          href="{{ url_for('meal_plans.editar_plano', plano_id=plano.id) }}"
+          class="btn btn-warning btn-small"
+        >
+          <i class="fas fa-edit"></i> Editar
+        </a>
+        <form
+          action="{{ url_for('meal_plans.apagar_plano', plano_id=plano.id) }}"
+          method="POST"
+          class="inline-form"
+          onsubmit="return confirm('Tens a certeza que queres apagar este plano?');"
+        >
+          {{ form_apagar.hidden_tag() }}
+          <button type="submit" class="btn btn-danger btn-small">
+            <i class="fas fa-trash"></i> Apagar
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-calendar-alt empty-icon"></i>
+    <p>Não existem planos semanais.</p>
+    <p class="empty-subtitle">
+      Crie seu primeiro plano semanal para organizar suas refeições.
+    </p>
+    <a href="{{ url_for('meal_plans.criar') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Criar Plano Semanal
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

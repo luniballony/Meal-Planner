@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% block title %}Editar Utilizador{% endblock %} {%
+block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-user-edit"></i> Editar Utilizador</h2>
+
+  <div class="admin-content">
+    <div class="form-container">
+      <div class="user-edit-header">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+          <h3>{{ utilizador.nome }}</h3>
+          <span class="user-email">{{ utilizador.email }}</span>
+          <div class="user-badges">
+            {% if utilizador.nivel == 1 %}
+            <span class="badge badge-basic">Utilizador Básico</span>
+            {% elif utilizador.nivel == 2 %}
+            <span class="badge badge-premium">Utilizador Premium</span>
+            {% elif utilizador.nivel == 3 %}
+            <span class="badge badge-admin">Administrador</span>
+            {% endif %}
+            <span class="user-since"
+              >Membro desde {{ utilizador.criado_em.strftime('%d/%m/%Y')
+              }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          <label for="{{ form.nome.id }}" class="form-label"
+            >{{ form.nome.label.text }}</label
+          >
+          {{ form.nome(size=40, class="input-field", placeholder="Nome
+          completo") }} {% for error in form.nome.errors %}
+          <small class="error-text">{{ error }}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.email.id }}" class="form-label"
+            >{{ form.email.label.text }}</label
+          >
+          {{ form.email(size=40, class="input-field",
+          placeholder="email@exemplo.com") }} {% for error in form.email.errors
+          %}
+          <small class="error-text">{{ error }}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.nivel.id }}" class="form-label"
+            >{{ form.nivel.label.text }}</label
+          >
+          {{ form.nivel(class="input-field") }}
+          <div class="nivel-info">
+            <div class="nivel-item">
+              <span class="nivel-badge badge-basic">1</span>
+              <span class="nivel-desc"
+                >Utilizador Básico - Acesso limitado</span
+              >
+            </div>
+            <div class="nivel-item">
+              <span class="nivel-badge badge-premium">2</span>
+              <span class="nivel-desc"
+                >Utilizador Premium - Acesso a recursos exclusivos</span
+              >
+            </div>
+            <div class="nivel-item">
+              <span class="nivel-badge badge-admin">3</span>
+              <span class="nivel-desc"
+                >Administrador - Acesso total ao sistema</span
+              >
+            </div>
+          </div>
+          {% for error in form.nivel.errors %}
+          <small class="error-text">{{ error }}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-info">
+          <i class="fas fa-info-circle"></i>
+          <p>
+            Alterar o nível de acesso do utilizador afetará imediatamente as
+            suas permissões no sistema.
+          </p>
+        </div>
+
+        <div class="form-actions">
+          <a
+            href="{{ url_for('admin.ver_utilizador', id=utilizador.id) }}"
+            class="btn btn-outline"
+          >
+            <i class="fas fa-arrow-left"></i> Voltar
+          </a>
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

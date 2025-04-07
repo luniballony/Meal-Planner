@@ -1,0 +1,211 @@
+{% extends "base.html" %} {% block title %}Gestão de Utilizadores{% endblock %}
+{% block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-users"></i> Gestão de Utilizadores</h2>
+
+  <div class="admin-content">
+    <div class="admin-actions">
+      <div class="search-container">
+        <input
+          type="text"
+          id="userSearch"
+          class="input-field search-input"
+          placeholder="Pesquisar utilizadores..."
+          onkeyup="filterUsers()"
+        />
+        <button class="btn btn-primary">
+          <i class="fas fa-search"></i> Pesquisar
+        </button>
+      </div>
+
+      <div class="filter-options">
+        <button class="btn btn-outline filter-btn active" data-filter="all">
+          Todos
+        </button>
+        <button class="btn btn-outline filter-btn" data-filter="admin">
+          Administradores
+        </button>
+        <button class="btn btn-outline filter-btn" data-filter="premium">
+          Premium
+        </button>
+        <button class="btn btn-outline filter-btn" data-filter="basic">
+          Básicos
+        </button>
+        <button class="btn btn-outline filter-btn" data-filter="blocked">
+          Bloqueados
+        </button>
+      </div>
+    </div>
+
+    {% if utilizadores %}
+    <div class="users-grid" id="usersContainer">
+      {% for user in utilizadores %}
+      <div
+        class="user-card"
+        data-name="{{ user.nome.lower() }}"
+        data-email="{{ user.email.lower() }}"
+        data-level="{% if user.nivel == 3 %}admin{% elif user.nivel == 2 %}premium{% else %}basic{% endif %}"
+        data-status="{% if user.ativo %}active{% else %}blocked{% endif %}"
+      >
+        <div class="user-card-header">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-info">
+            <h3>{{ user.nome }}</h3>
+            <span class="user-email">{{ user.email }}</span>
+          </div>
+        </div>
+
+        <div class="user-card-content">
+          <div class="user-badges">
+            {% if user.nivel == 3 %}
+            <span class="badge badge-admin">Administrador</span>
+            {% elif user.nivel == 2 %}
+            <span class="badge badge-premium">Premium</span>
+            {% else %}
+            <span class="badge badge-basic">Básico</span>
+            {% endif %} {% if not user.ativo %}
+            <span class="badge badge-blocked">Bloqueado</span>
+            {% endif %}
+
+            <span class="user-since"
+              >Membro desde {{ user.criado_em.strftime('%d/%m/%Y') }}</span
+            >
+          </div>
+
+          <div class="user-stats">
+            <div class="stat-item">
+              <i class="fas fa-utensils"></i>
+              <span>{{ user.receitas|length }} receitas</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span>{{ user.planos|length }} planos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-card-actions">
+          <a
+            href="{{ url_for('admin.ver_utilizador', id=user.id) }}"
+            class="btn btn-small btn-info"
+          >
+            <i class="fas fa-eye"></i> Ver
+          </a>
+          <a
+            href="{{ url_for('admin.editar_utilizador', id=user.id) }}"
+            class="btn btn-small btn-warning"
+          >
+            <i class="fas fa-edit"></i> Editar
+          </a>
+          <div class="dropdown">
+            <button class="btn btn-small btn-secondary dropdown-toggle">
+              <i class="fas fa-ellipsis-v"></i> Mais
+            </button>
+            <div class="dropdown-content">
+              <form
+                method="POST"
+                action="{{ url_for('admin.bloquear_utilizador', id=user.id) }}"
+                class="inline-form"
+                onsubmit="return confirm('Tem certeza que deseja {{ 'desbloquear' if not user.ativo else 'bloquear' }} este utilizador?');"
+              >
+                {{ form_apagar.hidden_tag() }}
+                <button type="submit" class="dropdown-item">
+                  {% if user.ativo %}
+                  <i class="fas fa-lock"></i> Bloquear {% else %}
+                  <i class="fas fa-lock-open"></i> Desbloquear {% endif %}
+                </button>
+              </form>
+              <form
+                method="POST"
+                action="{{ url_for('admin.apagar_utilizador', id=user.id) }}"
+                class="inline-form"
+                onsubmit="return confirm('Tem certeza que deseja eliminar este utilizador? Esta ação é irreversível.');"
+              >
+                {{ form_apagar.hidden_tag() }}
+                <button type="submit" class="dropdown-item danger">
+                  <i class="fas fa-trash"></i> Apagar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <i class="fas fa-users empty-icon"></i>
+      <p>Não existem utilizadores no sistema.</p>
+      <p class="empty-subtitle">
+        Os utilizadores aparecerão aqui quando se registarem na plataforma.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Filtrar utilizadores por pesquisa
+  function filterUsers() {
+    const searchInput = document.getElementById("userSearch");
+    const filter = searchInput.value.toLowerCase();
+    const users = document.querySelectorAll(".user-card");
+
+    users.forEach((user) => {
+      const name = user.getAttribute("data-name");
+      const email = user.getAttribute("data-email");
+
+      if (name.includes(filter) || email.includes(filter)) {
+        user.style.display = "";
+      } else {
+        user.style.display = "none";
+      }
+    });
+  }
+
+  // Filtrar por tipo de utilizador
+  document.querySelectorAll(".filter-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      // Atualizar botão ativo
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+      this.classList.add("active");
+
+      const filterValue = this.getAttribute("data-filter");
+      const users = document.querySelectorAll(".user-card");
+
+      users.forEach((user) => {
+        const level = user.getAttribute("data-level");
+        const status = user.getAttribute("data-status");
+
+        if (filterValue === "all") {
+          user.style.display = "";
+        } else if (filterValue === "blocked") {
+          user.style.display = status === "blocked" ? "" : "none";
+        } else {
+          user.style.display = level === filterValue ? "" : "none";
+        }
+      });
+    });
+  });
+
+  // Dropdown para ações
+  document.querySelectorAll(".dropdown-toggle").forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const dropdown = this.nextElementSibling;
+      dropdown.classList.toggle("show");
+    });
+  });
+
+  // Fechar dropdown ao clicar fora
+  window.addEventListener("click", function () {
+    document.querySelectorAll(".dropdown-content").forEach((dropdown) => {
+      dropdown.classList.remove("show");
+    });
+  });
+</script>
+{% endblock %}

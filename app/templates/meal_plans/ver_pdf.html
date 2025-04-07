@@ -1,0 +1,248 @@
+{% extends "base_pdf.html" %} {% block content %}
+<div class="pdf-container">
+  <div class="pdf-header">
+    <h1>Plano Semanal de Refeições</h1>
+    <div class="pdf-meta">
+      <p>Data de início: {{ plano.data_inicio.strftime('%d/%m/%Y') }}</p>
+      <p>
+        Período: {{ plano.data_inicio.strftime('%d/%m') }} - {{
+        (plano.data_inicio + timedelta(days=6)).strftime('%d/%m/%Y') }}
+      </p>
+    </div>
+  </div>
+
+  <div class="pdf-summary">
+    <div class="summary-box">
+      <div class="summary-title">Resumo do Plano</div>
+      <div class="summary-content">
+        <p>
+          <strong>Dias planejados:</strong> {{
+          plano.refeicoes|selectattr('data_refeicao')|map(attribute='data_refeicao')|unique|list|length
+          }}
+        </p>
+        <p><strong>Total de refeições:</strong> {{ plano.refeicoes|length }}</p>
+      </div>
+    </div>
+  </div>
+
+  {% set dias_pt = { "Monday": "segunda-feira", "Tuesday": "terça-feira",
+  "Wednesday": "quarta-feira", "Thursday": "quinta-feira", "Friday":
+  "sexta-feira", "Saturday": "sábado", "Sunday": "domingo" } %} {% set
+  refeicoes_ordenadas = ["pequeno_almoço", "almoço", "jantar"] %}
+
+  <!-- Organizar entradas por dia e tipo de refeição -->
+  {% set entradas_por_dia = {} %} {% for entrada in plano.refeicoes %} {% set
+  dia = entrada.data_refeicao %} {% if dia not in entradas_por_dia %} {% set _ =
+  entradas_por_dia.update({dia: {}}) %} {% endif %} {% set _ =
+  entradas_por_dia[dia].update({entrada.refeicao_tipo: entrada}) %} {% endfor %}
+
+  <div class="pdf-days">
+    <!-- Gerar dias do plano -->
+    {% set data_atual = plano.data_inicio %} {% for i in range(7) %} {% set dia
+    = data_atual + timedelta(days=i) %}
+    <div class="pdf-day">
+      <div class="day-header">
+        <h2>
+          {{ dias_pt[dia.strftime('%A')] | capitalize }}, {{
+          dia.strftime('%d/%m/%Y') }}
+        </h2>
+      </div>
+
+      <table class="meals-table">
+        <thead>
+          <tr>
+            <th class="meal-type-col">Refeição</th>
+            <th>Receita</th>
+            <th class="meal-time-col">Tempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tipo in refeicoes_ordenadas %}
+          <tr
+            {%
+            if
+            dia
+            not
+            in
+            entradas_por_dia
+            or
+            tipo
+            not
+            in
+            entradas_por_dia[dia]
+            %}class="empty-meal"
+            {%
+            endif
+            %}
+          >
+            <td class="meal-type">{{ tipo.replace("_", " ").capitalize() }}</td>
+
+            {% if dia in entradas_por_dia and tipo in entradas_por_dia[dia] %}
+            {% set entrada = entradas_por_dia[dia][tipo] %}
+            <td class="meal-recipe">
+              <div class="recipe-title">{{ entrada.receita.titulo }}</div>
+              {% if entrada.receita.tags %}
+              <div class="recipe-tags">Tags: {{ entrada.receita.tags }}</div>
+              {% endif %}
+            </td>
+            <td class="meal-time">
+              {% if entrada.receita.tempo_preparacao %} {{
+              entrada.receita.tempo_preparacao }} min {% else %} - {% endif %}
+            </td>
+            {% else %}
+            <td class="meal-recipe">Nenhuma receita selecionada</td>
+            <td class="meal-time">-</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="pdf-footer">
+    <p>Gerado em {{ now().strftime('%d/%m/%Y às %H:%M') }}</p>
+    <p>Meal Planner - Organize suas refeições de forma prática</p>
+  </div>
+</div>
+
+<style>
+  .pdf-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .pdf-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #4caf50;
+  }
+
+  .pdf-header h1 {
+    color: #2e7d32;
+    margin: 0 0 15px 0;
+  }
+
+  .pdf-meta {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .pdf-meta p {
+    margin: 5px 0;
+  }
+
+  .pdf-summary {
+    margin-bottom: 30px;
+  }
+
+  .summary-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .summary-title {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .summary-content {
+    padding: 15px;
+  }
+
+  .summary-content p {
+    margin: 5px 0;
+  }
+
+  .pdf-days {
+    margin-bottom: 30px;
+  }
+
+  .pdf-day {
+    margin-bottom: 30px;
+    page-break-inside: avoid;
+  }
+
+  .day-header {
+    margin-bottom: 15px;
+  }
+
+  .day-header h2 {
+    color: #2e7d32;
+    margin: 0;
+    font-size: 18px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .meals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .meals-table th,
+  .meals-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .meals-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  .meal-type-col {
+    width: 20%;
+  }
+
+  .meal-time-col {
+    width: 15%;
+  }
+
+  .meal-type {
+    font-weight: bold;
+  }
+
+  .recipe-title {
+    font-weight: normal;
+  }
+
+  .recipe-tags {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .empty-meal {
+    color: #999;
+    font-style: italic;
+  }
+
+  .pdf-footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .pdf-footer p {
+    margin: 5px 0;
+  }
+
+  @page {
+    margin: 2cm;
+  }
+</style>
+{% endblock %}

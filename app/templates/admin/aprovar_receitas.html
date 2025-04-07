@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block title %}Aprovar Receitas{% endblock %} {%
+block content %}
+<div class="admin-container">
+  <h2><i class="fas fa-check-circle"></i> Receitas Pendentes de Aprovação</h2>
+
+  {% if pendentes %}
+  <div class="receitas-pendentes">
+    {% for receita in pendentes %}
+    <div class="receita-card">
+      <div class="receita-header">
+        <h3>{{ receita.titulo }}</h3>
+        <span class="badge badge-warning">Pendente</span>
+      </div>
+
+      <div class="receita-meta">
+        <span
+          ><i class="fas fa-user"></i> {{ receita.autor.nome if receita.autor
+          else 'Desconhecido' }}</span
+        >
+        <span
+          ><i class="fas fa-calendar-alt"></i> {{
+          receita.data_submetida.strftime('%d/%m/%Y') }}</span
+        >
+        <span
+          ><i class="fas fa-tag"></i> {{ receita.categoria.nome if
+          receita.categoria else 'Sem categoria' }}</span
+        >
+      </div>
+
+      <div class="receita-content">
+        <div class="receita-section">
+          <h4><i class="fas fa-info-circle"></i> Descrição</h4>
+          <p>{{ receita.descricao }}</p>
+        </div>
+
+        <div class="receita-section">
+          <h4><i class="fas fa-shopping-basket"></i> Ingredientes</h4>
+          <div class="ingredientes-text">{{ receita.ingredientes }}</div>
+        </div>
+
+        <div class="receita-section">
+          <h4><i class="fas fa-list-ol"></i> Instruções</h4>
+          <div class="instrucoes-text">{{ receita.instrucoes }}</div>
+        </div>
+
+        <div class="receita-section">
+          <h4><i class="fas fa-info"></i> Informações Adicionais</h4>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Tempo de Preparação:</span>
+              <span class="info-value"
+                >{{ receita.tempo_preparacao }} minutos</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="info-label">Dificuldade:</span>
+              <span class="info-value">
+                {% if receita.dificuldade == 1 %} Fácil {% elif
+                receita.dificuldade == 2 %} Médio {% else %} Difícil {% endif %}
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Publicação:</span>
+              <span class="info-value">
+                {% if receita.publica_quando_aprovada %} Será publicada quando
+                aprovada {% else %} Permanecerá privada {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-actions">
+        <a
+          href="{{ url_for('admin.aprovar_receita_admin', receita_id=receita.id) }}"
+          class="btn btn-primary"
+        >
+          <i class="fas fa-check"></i> Aprovar
+        </a>
+        <a
+          href="{{ url_for('admin.recusar_receita_admin', receita_id=receita.id) }}"
+          class="btn btn-danger"
+          onclick="return confirm('Tem certeza que deseja recusar esta receita?');"
+        >
+          <i class="fas fa-times"></i> Recusar
+        </a>
+        <!-- Botão "Visualizar" removido -->
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-check-circle empty-icon"></i>
+    <p>Não há receitas pendentes de aprovação no momento.</p>
+    <p class="empty-subtitle">
+      Todas as receitas foram processadas. Bom trabalho!
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

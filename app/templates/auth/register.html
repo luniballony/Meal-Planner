@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block title %}Registar{% endblock %} {% block
+content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="fas fa-user-plus"></i>
+      <h2>Cria a tua conta</h2>
+      <p class="auth-subtitle">
+        Regista-te para aceder a todas as funcionalidades
+      </p>
+    </div>
+
+    <form method="POST" class="form">
+      {{ form.csrf_token }}
+
+      <div class="form-group">
+        <label for="{{ form.nome.id }}" class="form-label"
+          >{{ form.nome.label.text }}</label
+        >
+        {{ form.nome(class="input-field", placeholder="Seu nome completo") }} {%
+        for error in form.nome.errors %}
+        <small class="error-text">{{ error }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.email.id }}" class="form-label"
+          >{{ form.email.label.text }}</label
+        >
+        {{ form.email(class="input-field", placeholder="seu@email.com") }} {%
+        for error in form.email.errors %}
+        <small class="error-text">{{ error }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password.id }}" class="form-label"
+          >{{ form.password.label.text }}</label
+        >
+        {{ form.password(class="input-field", placeholder="Escolha uma senha
+        segura") }} {% for error in form.password.errors %}
+        <small class="error-text">{{ error }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.confirmar_password.id }}" class="form-label"
+          >{{ form.confirmar_password.label.text }}</label
+        >
+        {{ form.confirmar_password(class="input-field", placeholder="Confirme
+        sua senha") }} {% for error in form.confirmar_password.errors %}
+        <small class="error-text">{{ error }}</small>
+        {% endfor %}
+      </div>
+
+      <div class="form-actions">
+        {{ form.submit(class="btn btn-primary btn-block") }}
+      </div>
+    </form>
+
+    <div class="auth-footer">
+      <p>
+        Já tens conta? <a href="{{ url_for('auth.login') }}">Faz login aqui</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
