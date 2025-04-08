@@ -5,7 +5,7 @@ from app.db import db
 class MealPlan(db.Model):
     __tablename__ = "meal_plans"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     data_inicio = db.Column(db.Date, nullable=False)
     criado_em = db.Column(db.DateTime, default=datetime.utcnow)
 
