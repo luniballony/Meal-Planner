@@ -6,7 +6,7 @@ from app.models.category import Category
 class Recipe(db.Model):
     __tablename__ = "recipes"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     titulo = db.Column(db.String(150), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
     ingredientes = db.Column(db.Text, nullable=False)
