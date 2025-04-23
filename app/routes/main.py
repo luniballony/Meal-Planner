@@ -17,3 +17,8 @@ def home():
     return render_template(
         "main/home.html", nome=session.get("user_nome", "Utilizador")
     )
+
+
+@main_bp.route('/sobre')
+def about():
+    return render_template('main/about.html')

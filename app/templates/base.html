@@ -25,6 +25,13 @@
               <i class="fas fa-home"></i> Início
             </a>
 
+            <a
+              href="{{ url_for('main.about') }}"
+              class="nav-item {% if request.endpoint == 'main.about' %}active{% endif %}"
+            >
+              <i class="fas fa-home"></i> Sobre Nos
+            </a>
+
             {% if session.get('user_id') %}
             <a
               href="{{ url_for('recipes.listar') }}"
