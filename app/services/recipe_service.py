@@ -116,7 +116,7 @@ def listar_receitas_por_utilizador(utilizador_id):
 
 def listar_pendentes():
     return (
-        Recipe.query.filter_by(publicada=False)
+        Recipe.query.filter_by(aprovada=False)
         .order_by(Recipe.data_submetida.asc())
         .all()
     )
