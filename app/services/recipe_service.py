@@ -64,16 +64,10 @@ def listar_receitas():
     query = Recipe.query
 
     if nivel == 3:
-        return query.order_by(Recipe.data_submetida.desc()).all()
 
-    if user_id:
-        query = query.filter(
-            or_(
-                Recipe.publicada == True,
-                Recipe.utilizador_id == user_id
-            )
         )
     else:
+        # Visitante sem login: só vê públicas
         query = query.filter_by(publicada=True)
 
     return query.order_by(Recipe.data_submetida.desc()).all()
