@@ -71,7 +71,7 @@ def listar_receitas():
         # Utilizador vê públicas + as suas
         query = query.filter(
             or_(Recipe.publicada == True, Recipe.utilizador_id == user_id)
-        
+        )
     else:
         # Visitante sem login: só vê públicas
         query = query.filter_by(publicada=True)
