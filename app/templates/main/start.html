@@ -1,9 +1,16 @@
-<div class="start-page">
-  <h1>Bem-vindo ao Meal Planner 🍽️</h1>
-  <p>Descobre, organiza e planeia as tuas refeições de forma simples.</p>
+{% extends "base.html" %}
+{% block title %}Meal Planner - Início{% endblock %}
 
-  <div class="landing-buttons">
-    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Entrar</a>
-    <a href="{{ url_for('auth.register') }}" class="btn btn-outline">Criar Conta</a>
+{% block content %}
+<div class="container" style="display: flex; justify-content: center; align-items: center; height: 70vh;">
+  <div class="card" style="padding: 2rem; text-align: center; max-width: 500px; width: 100%;">
+    <h1>Bem-vindo ao Meal Planner 🍽️</h1>
+    <p class="lead">Descobre, organiza e planeia as tuas refeições de forma simples.</p>
+
+    <div class="mt-4">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-success me-2">Entrar</a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success">Criar Conta</a>
+    </div>
   </div>
 </div>
+{% endblock %}
