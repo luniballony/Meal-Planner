@@ -1,6 +1,7 @@
 from app.models.recipe import Recipe
 from app.db import db
 from sqlalchemy import or_
+from flask import session
 
 
 def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
@@ -56,14 +57,25 @@ def eliminar_receita(receita_id):
     return False  # Retorna False se a receita não for encontrada
 
 
-def listar_receitas(utilizador_id=None):
+def listar_receitas():
+    user_id = session.get("user_id")
+    nivel = session.get("user_nivel")
+
     query = Recipe.query
-    if utilizador_id:
+
+    if nivel == 3:
+        # Admin vê tudo
+        return query.order_by(Recipe.data_submetida.desc()).all()
+
+    if user_id:
+        # Utilizador vê públicas + as suas
         query = query.filter(
-            or_(Recipe.publicada == True, Recipe.utilizador_id == utilizador_id)
+            or_(Recipe.publicada == True, Recipe.utilizador_id == user_id)
         )
     else:
+        # Visitante sem login: só vê públicas
         query = query.filter_by(publicada=True)
+
     return query.order_by(Recipe.data_submetida.desc()).all()
 
 
