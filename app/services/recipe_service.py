@@ -15,7 +15,7 @@ def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
     categoria_id = dados.get("categoria_id")
 
     if not (titulo and ingredientes and instrucoes and categoria_id):
-        return None  # Campos essenciais obrigatórios
+        return None
 
     nova_receita = Recipe(
         titulo=titulo,
@@ -30,7 +30,6 @@ def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
         aprovada=dados.get("aprovada", False),
         fonte=dados.get("fonte", "utilizador"),
         utilizador_id=utilizador_id,
-        # Armazenar a preferência do usuário em um campo adicional
         publica_quando_aprovada=publica_quando_aprovada,
     )
     db.session.add(nova_receita)
@@ -41,7 +40,6 @@ def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
 def aprovar_receita(receita_id):
     receita = Recipe.query.get(receita_id)
     if receita:
-        # Definir como publicada apenas se o usuário marcou a opção
         receita.publicada = receita.publica_quando_aprovada
         receita.aprovada = True
         db.session.commit()
@@ -53,8 +51,8 @@ def eliminar_receita(receita_id):
     if receita:
         db.session.delete(receita)
         db.session.commit()
-        return True  # Retorna True quando a operação for bem-sucedida
-    return False  # Retorna False se a receita não for encontrada
+        return True
+    return False
 
 
 def listar_receitas():
@@ -64,16 +62,16 @@ def listar_receitas():
     query = Recipe.query
 
     if nivel == 3:
-        # Admin vê tudo
         return query.order_by(Recipe.data_submetida.desc()).all()
 
     if user_id:
-        # Utilizador vê públicas + as suas
         query = query.filter(
-            or_(Recipe.publicada == True, Recipe.utilizador_id == user_id)
+            or_(
+                Recipe.publicada == True,
+                Recipe.utilizador_id == user_id
+            )
         )
     else:
-        # Visitante sem login: só vê públicas
         query = query.filter_by(publicada=True)
 
     return query.order_by(Recipe.data_submetida.desc()).all()
@@ -85,7 +83,10 @@ def buscar_receitas(filtros):
     if "search" in filtros:
         termo = f"%{filtros['search']}%"
         query = query.filter(
-            or_(Recipe.titulo.ilike(termo), Recipe.descricao.ilike(termo))
+            or_(
+                Recipe.titulo.ilike(termo),
+                Recipe.descricao.ilike(termo)
+            )
         )
 
     if "categoria" in filtros:
@@ -115,7 +116,7 @@ def listar_receitas_por_utilizador(utilizador_id):
 
 def listar_pendentes():
     return (
-        Recipe.query.filter_by(publicada=False)
+        Recipe.query.filter_by(aprovada=False)
         .order_by(Recipe.data_submetida.asc())
         .all()
     )

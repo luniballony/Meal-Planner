@@ -3324,25 +3324,15 @@ textarea.input-field {
   width: 100%;
 }
 
-
-/* ====================================================
-   Página Inicial (Start)
-   ==================================================== */
-
-.start-header {
-  margin: 15px;
+/* Estilos para a página de inicio */
+.start-page {
+  text-align: center;
+  margin-top: 80px;
 }
 
-.start-subtitle {
-  margin: 8px;
-}
-
-.start-background {
-  background-image: url('background.jpg');
-  background-size: cover; /* cobre o ecrã */
-  background-repeat: no-repeat;
-  background-position: center center;
-  
-  width: 100vw;  /* 100% da largura da viewport */
-  height: 100vh; /* 100% da altura da viewport */
+.landing-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
