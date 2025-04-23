@@ -30,6 +30,8 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(categories_bp)
 
+
+
     # Adicionar filtros personalizados para templates
     @app.template_filter("dias_desde")
     def dias_desde(data):
