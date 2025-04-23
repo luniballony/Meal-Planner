@@ -3323,3 +3323,26 @@ textarea.input-field {
   border: none;
   width: 100%;
 }
+
+
+/* ====================================================
+   Página Inicial (Start)
+   ==================================================== */
+
+.start-header {
+  margin: 15px;
+}
+
+.start-subtitle {
+  margin: 8px;
+}
+
+.start-background {
+  background-image: url('background.jpg');
+  background-size: cover; /* cobre o ecrã */
+  background-repeat: no-repeat;
+  background-position: center center;
+  
+  width: 100vw;  /* 100% da largura da viewport */
+  height: 100vh; /* 100% da altura da viewport */
+}
