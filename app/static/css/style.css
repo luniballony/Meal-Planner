@@ -3323,3 +3323,16 @@ textarea.input-field {
   border: none;
   width: 100%;
 }
+
+/* Estilos para a página de inicio */
+.start-page {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.landing-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
