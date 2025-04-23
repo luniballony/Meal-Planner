@@ -71,7 +71,9 @@ def listar():
 def ver(receita_id):
     receita = obter_receita_por_id(receita_id)
     if not receita or (
-        not receita.publicada and receita.utilizador_id != session.get("user_id")
+        not receita.publicada
+        and receita.utilizador_id != session.get("user_id")
+        and session.get("user_nivel") != 3
     ):
         flash("Receita não encontrada.", "danger")
         return redirect(url_for("recipes.listar"))
