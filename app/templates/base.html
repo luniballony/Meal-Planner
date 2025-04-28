@@ -29,7 +29,7 @@
               href="{{ url_for('main.about') }}"
               class="nav-item {% if request.endpoint == 'main.about' %}active{% endif %}"
             >
-              <i class="fas fa-home"></i> Sobre Nos
+              <i class="fas fa-circle-info"></i> Sobre Nos
             </a>
 
             {% if session.get('user_id') %}
@@ -94,7 +94,7 @@
               <span>Olá, {{ session.get('user_nome') }}</span>
 
               <a href="{{ url_for('main.home') }}" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Perfil
+                <i class="fas fa-user"></i> Perfil
               </a>
             
               <a href="{{ url_for('auth.logout') }}" class="logout-btn">

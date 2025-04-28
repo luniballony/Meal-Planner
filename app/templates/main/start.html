@@ -8,8 +8,15 @@
     <p class="lead">Descobre, organiza e planeia as tuas refeições de forma simples.</p>
 
     <div class="mt-4">
+
+      {% if session.get('user_id') %}
+      <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary">Explorar</a>
+
+      {% else %}
+
       <a href="{{ url_for('auth.login') }}" class="btn btn-success me-2">Entrar</a>
       <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success">Criar Conta</a>
+      {% endif %}
     </div>
   </div>
 </div>
