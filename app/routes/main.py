@@ -19,6 +19,11 @@ def home():
     )
 
 
-@main_bp.route('/sobre')
+@main_bp.route("/start")
+def start():
+    return render_template("main/start.html")
+
+
+@main_bp.route('/about')
 def about():
     return render_template('main/about.html')
