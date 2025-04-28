@@ -66,6 +66,14 @@ def listar():
 
     return render_template("recipes/listar.html", receitas_por_categoria=agrupadas)
 
+@recipes_bp.route("/", endpoint="favoritas")
+def favoritas():
+    return
+
+@recipes_bp.route("/", endpoint="bloqueadas")
+def bloqueadas():
+    return
+
 
 @recipes_bp.route("/<int:receita_id>")
 def ver(receita_id):

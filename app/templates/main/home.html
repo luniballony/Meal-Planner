@@ -64,7 +64,36 @@
         </a>
       </div>
     </div>
+
+    <div class="action-card">
+      <div class="action-icon categories">
+        <i class="fas fa-heart"></i>
+      </div>
+      <h3>Favoritos</h3>
+      <p>Vê as receitas que marcaste como favoritas</p>
+      <div class="action-buttons">
+        <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary">
+          Ver favoritos
+        </a>
+      </div>
+    </div>
+
+    <div class="action-card">
+        <div class="action-icon categories">
+          <i class="fas fa-trash"></i>
+        </div>
+        <h3>Receitas Bloqueadas</h3>
+        <p>Vê as receitas que bloqueaste</p>
+        <div class="action-buttons">
+          <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary">
+            Ver receitas bloqueadas
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
+
+ 
 
   <div class="logout-section">
     <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
