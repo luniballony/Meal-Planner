@@ -33,6 +33,7 @@
             </a>
 
             {% if session.get('user_id') %}
+            
             <a
               href="{{ url_for('recipes.listar') }}"
               class="nav-item {% if request.endpoint == 'recipes.listar' %}active{% endif %}"
@@ -91,6 +92,11 @@
             {% if session.get('user_id') %}
             <div class="user-greeting">
               <span>Olá, {{ session.get('user_nome') }}</span>
+
+              <a href="{{ url_for('main.home') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Perfil
+              </a>
+            
               <a href="{{ url_for('auth.logout') }}" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
