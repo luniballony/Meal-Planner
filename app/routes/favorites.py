@@ -1,4 +1,6 @@
-from flask import Blueprint, session, redirect, url_for, flash
+from flask import Blueprint, session, redirect, url_for, flash, render_template
+from app import db
+from app.models import Receita, Favorites
 from app.services.favorites_service import adicionar_favorito
 
 favorites_bp = Blueprint("favorites", __name__, url_prefix="/favorites")
@@ -8,7 +10,7 @@ def adicionar(receita_id):
     user_id = session.get("user_id")
     if not user_id:
         flash("Precisas de iniciar sessão para adicionar favoritos.", "warning")
-        return redirect(url_for("auth.login"))  # ou qualquer rota de login
+        return redirect(url_for("auth.login"))
 
     adicionar_favorito(user_id, receita_id)
     flash("Receita adicionada aos favoritos!", "success")
@@ -27,4 +29,4 @@ def ver_favoritos():
         .filter(Favorites.utilizador_id == user_id)
         .all()
     )
-    return render_template("favoritos.html", receitas=favoritos)
+    return render_template("recipes/favorites.html", receitas=favoritos)
