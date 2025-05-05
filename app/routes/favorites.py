@@ -14,3 +14,17 @@ def adicionar(receita_id):
     flash("Receita adicionada aos favoritos!", "success")
     return redirect(url_for("main.home"))
 
+@favorites_bp.route("/ver", methods=["GET"])
+def ver_favoritos():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Precisas de iniciar sessão para ver os favoritos.", "warning")
+        return redirect(url_for("auth.login"))
+
+    favoritos = (
+        db.session.query(Receita)
+        .join(Favorites)
+        .filter(Favorites.utilizador_id == user_id)
+        .all()
+    )
+    return render_template("favoritos.html", receitas=favoritos)
