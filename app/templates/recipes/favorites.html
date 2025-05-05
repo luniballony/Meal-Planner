@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Receitas Favoritas{% endblock %}
+
+{% block content %}
+<h2>As tuas receitas favoritas</h2>
+
+{% if receitas %}
+  <div class="recipe-list">
+    {% for receita in receitas %}
+      <div class="card">
+        <h3>{{ receita.titulo }}</h3>
+        <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
+        <a href="{{ url_for('recipes.ver', id=receita.id) }}" class="btn btn-primary">Ver receita</a>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Não adicionaste receitas aos favoritos ainda.</p>
+{% endif %}
+
+<a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+{% endblock %}
