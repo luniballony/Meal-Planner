@@ -24,7 +24,7 @@ def ver_favoritos():
         return redirect(url_for("auth.login"))
 
     favoritos = (
-        db.session.query(Receita)
+        db.session.query(Recipe)
         .join(Favorites)
         .filter(Favorites.utilizador_id == user_id)
         .all()
