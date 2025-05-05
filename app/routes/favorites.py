@@ -1,6 +1,6 @@
 from flask import Blueprint, session, redirect, url_for, flash, render_template
 from app import db
-from app.models import Receita, Favorites
+from app.models import Recipe, Favorites
 from app.services.favorites_service import adicionar_favorito
 
 favorites_bp = Blueprint("favorites", __name__, url_prefix="/favorites")
