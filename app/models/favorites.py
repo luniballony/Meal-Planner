@@ -15,4 +15,10 @@ class Favorites(db.Model):
             "id_receita": self.receita_id,
             "id_utilizador": self.utilizador_id,
         }
+  
+    # impede que utilizador adicione a mesma receita várias vezes
+    __table_args__ = (
+    db.PrimaryKeyConstraint('utilizador_id', 'receita_id'),
+)
+
 

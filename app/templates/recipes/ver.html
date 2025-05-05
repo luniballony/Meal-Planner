@@ -3,6 +3,12 @@ block content %}
 <div class="card recipe-card">
   <h2 class="recipe-title">{{ receita.titulo }}</h2>
 
+  <form method="POST" action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}">
+    {{ form.hidden_tag() }}
+    {{ form.submit(class="btn btn-primary") }}
+  </form>
+  
+
   <div class="recipe-meta">
     <p><strong>Categoria:</strong> {{ receita.categoria.nome }}</p>
     <p>

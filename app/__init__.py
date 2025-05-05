@@ -10,6 +10,8 @@ from app.routes.meal_plans import meal_plans_bp
 from app.routes.admin import admin_bp
 from app.routes.main import main_bp
 from app.routes.categories import categories_bp
+from app.routes.favorites import favorites_bp
+
 
 # Instância de proteção CSRF
 csrf = CSRFProtect()
@@ -29,7 +31,7 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(categories_bp)
-
+    app.register_blueprint(favorites_bp)
 
 
     # Adicionar filtros personalizados para templates

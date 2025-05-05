@@ -7,6 +7,8 @@ from app.services.recipe_service import (
 )
 from app.services.category_service import listar_categorias
 from collections import defaultdict
+from app.forms.favorites_form import AdicionarFavoritoForm
+
 
 recipes_bp = Blueprint("recipes", __name__, url_prefix="/receitas")
 
@@ -86,4 +88,7 @@ def ver(receita_id):
         flash("Receita não encontrada.", "danger")
         return redirect(url_for("recipes.listar"))
 
-    return render_template("recipes/ver.html", receita=receita)
+    form = AdicionarFavoritoForm()  # <- Adiciona esta linha
+    return render_template("recipes/ver.html", receita=receita, form=form)
+
+
