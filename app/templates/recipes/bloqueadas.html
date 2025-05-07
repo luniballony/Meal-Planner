@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %}Receitas Favoritas{% endblock %} {%
+{% extends "base.html" %} {% block title %}Receitas Bloqueadas{% endblock %} {%
 block content %}
-<h2>As tuas receitas favoritas</h2>
+<h2>As tuas receitas bloqueadas</h2>
 
 {% if receitas %}
 <div class="recipe-list">
@@ -19,17 +19,16 @@ block content %}
 
       <form
         method="POST"
-        action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
+        action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
       >
-        {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
-        btn-danger") }}
+        {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
       </form>
     </div>
   </div>
   {% endfor %}
 </div>
 {% else %}
-<p>Não adicionaste receitas aos favoritos ainda.</p>
+<p>Não bloqueaste nenhuma receita ainda.</p>
 {% endif %}
 
 <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>

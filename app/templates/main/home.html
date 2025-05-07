@@ -1,6 +1,5 @@
-{% extends "base.html" %}
-{% block title %}Início{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Início{% endblock %} {% block content
+%}
 <div class="home-dashboard">
   <div class="welcome-section">
     <div class="welcome-header">
@@ -25,12 +24,12 @@
       <h3>Receitas</h3>
       <p>Explore e descubra novas receitas para experimentar</p>
       <div class="action-buttons">
-        <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary">
-          Ver receitas
-        </a>
-        <a href="{{ url_for('recipes.submeter') }}" class="btn btn-outline">
-          Submeter nova
-        </a>
+        <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary"
+          >Ver receitas</a
+        >
+        <a href="{{ url_for('recipes.submeter') }}" class="btn btn-outline"
+          >Submeter nova</a
+        >
       </div>
     </div>
 
@@ -41,15 +40,14 @@
       <h3>Planos de Refeição</h3>
       <p>Organize suas refeições semanais de forma prática</p>
       <div class="action-buttons">
-        <a href="{{ url_for('meal_plans.criar') }}" class="btn btn-primary">
-          Criar plano
-        </a>
+        <a href="{{ url_for('meal_plans.criar') }}" class="btn btn-primary"
+          >Criar plano</a
+        >
         <a
           href="{{ url_for('meal_plans.meus_planos') }}"
           class="btn btn-outline"
+          >Ver meus planos</a
         >
-          Ver meus planos
-        </a>
       </div>
     </div>
 
@@ -60,9 +58,9 @@
       <h3>Categorias</h3>
       <p>Navegue pelas receitas organizadas por categoria</p>
       <div class="action-buttons">
-        <a href="{{ url_for('categories.index') }}" class="btn btn-primary">
-          Explorar categorias
-        </a>
+        <a href="{{ url_for('categories.index') }}" class="btn btn-primary"
+          >Explorar categorias</a
+        >
       </div>
     </div>
 
@@ -73,13 +71,14 @@
       <h3>Favoritos</h3>
       <p>Vê as receitas que marcaste como favoritas</p>
       <div class="action-buttons">
-        <a href="{{ url_for('favorites.ver_favoritos') }}" class="btn btn-primary">
-          Ver favoritos
-        </a>
+        <a
+          href="{{ url_for('favorites.ver_favoritos') }}"
+          class="btn btn-primary"
+          >Ver favoritos</a
+        >
       </div>
     </div>
 
-    {# Botão de receitas bloqueadas — só ativa quando implementares #}
     <div class="action-card">
       <div class="action-icon categories">
         <i class="fas fa-trash"></i>
@@ -87,9 +86,9 @@
       <h3>Receitas Bloqueadas</h3>
       <p>Vê as receitas que bloqueaste</p>
       <div class="action-buttons">
-        <a href="#" class="btn btn-primary disabled" title="Funcionalidade ainda não disponível">
-          Ver receitas bloqueadas
-        </a>
+        <a href="{{ url_for('recipes.bloqueadas') }}" class="btn btn-primary"
+          >Ver receitas bloqueadas</a
+        >
       </div>
     </div>
   </div>

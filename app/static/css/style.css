@@ -84,10 +84,7 @@ ul {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
 }
 
 .btn-danger:hover {
@@ -3335,4 +3332,17 @@ textarea.input-field {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+.btn,
+.btn-success,
+.btn-danger {
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+pre.recipe-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
 }
