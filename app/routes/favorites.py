@@ -1,7 +1,9 @@
 from flask import Blueprint, session, redirect, url_for, flash, render_template
 from app import db
 from app.models import Recipe, Favorites
-from app.services.favorites_service import adicionar_favorito
+from app.services.favorites_service import adicionar_favorito, remover_favorito
+from app.forms.favorites_form import AdicionarFavoritoForm
+from app.forms.remove_favorites_form import RemoverFavoritoForm
 
 favorites_bp = Blueprint("favorites", __name__, url_prefix="/favorites")
 
@@ -31,7 +33,10 @@ def ver_favoritos():
         .filter(Favorites.utilizador_id == user_id)
         .all()
     )
-    return render_template("recipes/favorites.html", receitas=favoritos)
+    remover_form = RemoverFavoritoForm()
+    return render_template(
+        "recipes/favorites.html", receitas=favoritos, remover_form=remover_form
+    )
 
 
 @favorites_bp.route("/remover/<int:receita_id>", methods=["POST"])
@@ -40,8 +45,6 @@ def remover(receita_id):
     if not user_id:
         flash("Precisas de iniciar sessão para remover favoritos.", "warning")
         return redirect(url_for("auth.login"))
-
-    from app.services.favorites_service import remover_favorito
 
     sucesso = remover_favorito(user_id, receita_id)
 
