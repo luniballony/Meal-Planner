@@ -3,3 +3,4 @@ from .recipe import Recipe
 from .category import Category
 from .meal_plan import MealPlan
 from .favorites import Favorites
+from .blocked_recipe import BlockedRecipe

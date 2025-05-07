@@ -1,21 +1,37 @@
-{% extends "base.html" %}
-{% block title %}Receitas Favoritas{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Receitas Favoritas{% endblock %} {%
+block content %}
 <h2>As tuas receitas favoritas</h2>
 
 {% if receitas %}
-  <div class="recipe-list">
-    {% for receita in receitas %}
-      <div class="card">
-        <h3>{{ receita.titulo }}</h3>
-        <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
-        <a href="{{ url_for('recipes.ver', receita_id=receita.id) }}" class="btn btn-primary">Ver receita</a>
-      </div>
-    {% endfor %}
+<div class="recipe-list">
+  {% for receita in receitas %}
+  <div class="card">
+    <h3>{{ receita.titulo }}</h3>
+    <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
+
+    <div class="action-buttons">
+      <!-- Ver Receita -->
+      <a
+        href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+        class="btn btn-primary"
+        >Ver receita</a
+      >
+
+      <!-- Remover dos Favoritos -->
+      <form
+        method="POST"
+        action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
+        style="display: inline"
+      >
+        {{ csrf_token() }}
+        <button type="submit" class="btn btn-danger">Remover</button>
+      </form>
+    </div>
   </div>
+  {% endfor %}
+</div>
 {% else %}
-  <p>Não adicionaste receitas aos favoritos ainda.</p>
+<p>Não adicionaste receitas aos favoritos ainda.</p>
 {% endif %}
 
 <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>

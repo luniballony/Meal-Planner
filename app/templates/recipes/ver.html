@@ -3,11 +3,24 @@ block content %}
 <div class="card recipe-card">
   <h2 class="recipe-title">{{ receita.titulo }}</h2>
 
-  <form method="POST" action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}">
-    {{ form.hidden_tag() }}
-    {{ form.submit(class="btn btn-primary") }}
+  <!-- Botão de Adicionar aos Favoritos -->
+  <form
+    method="POST"
+    action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}"
+    style="display: inline"
+  >
+    {{ form.hidden_tag() }} {{ form.submit(class="btn btn-primary") }}
   </form>
-  
+
+  <!-- Botão de Bloquear Receita -->
+  <form
+    method="POST"
+    action="{{ url_for('recipes.bloquear', receita_id=receita.id) }}"
+    style="display: inline"
+  >
+    {{ csrf_token() }}
+    <button type="submit" class="btn btn-danger">Bloquear receita</button>
+  </form>
 
   <div class="recipe-meta">
     <p><strong>Categoria:</strong> {{ receita.categoria.nome }}</p>

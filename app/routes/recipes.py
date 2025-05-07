@@ -8,6 +8,7 @@ from app.services.recipe_service import (
 from app.services.category_service import listar_categorias
 from collections import defaultdict
 from app.forms.favorites_form import AdicionarFavoritoForm
+from app.services.blocked_service import bloquear_receita, listar_bloqueadas
 
 
 recipes_bp = Blueprint("recipes", __name__, url_prefix="/receitas")
@@ -68,9 +69,11 @@ def listar():
 
     return render_template("recipes/listar.html", receitas_por_categoria=agrupadas)
 
+
 @recipes_bp.route("/", endpoint="favoritas")
 def favoritas():
     return
+
 
 @recipes_bp.route("/", endpoint="bloqueadas")
 def bloqueadas():
@@ -92,3 +95,24 @@ def ver(receita_id):
     return render_template("recipes/ver.html", receita=receita, form=form)
 
 
+@recipes_bp.route("/bloquear/<int:receita_id>", methods=["POST"])
+def bloquear(receita_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Precisas de iniciar sessão para bloquear receitas.", "warning")
+        return redirect(url_for("auth.login"))
+
+    bloquear_receita(user_id, receita_id)
+    flash("Receita bloqueada com sucesso!", "success")
+    return redirect(url_for("recipes.listar"))
+
+
+@recipes_bp.route("/bloqueadas")
+def bloqueadas():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Precisas de iniciar sessão para ver receitas bloqueadas.", "warning")
+        return redirect(url_for("auth.login"))
+
+    receitas = listar_bloqueadas(user_id)
+    return render_template("recipes/bloqueadas.html", receitas=receitas)
