@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, session
 from app.forms.recipe_form import RecipeForm
 from app.forms.favorites_form import AdicionarFavoritoForm
 from app.forms.block_recipe_form import BloquearReceitaForm
+from app.forms.unblock_form import DesbloquearReceitaForm
 from app.services.recipe_service import (
     criar_receita,
     listar_receitas,
@@ -107,7 +108,8 @@ def bloqueadas():
         return redirect(url_for("auth.login"))
 
     receitas = listar_bloqueadas(user_id)
-    return render_template("recipes/bloqueadas.html", receitas=receitas)
+    form = DesbloquearReceitaForm()
+    return render_template("recipes/bloqueadas.html", receitas=receitas, form=form)
 
 
 @recipes_bp.route("/desbloquear/<int:receita_id>", methods=["POST"])
