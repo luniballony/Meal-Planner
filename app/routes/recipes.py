@@ -75,11 +75,6 @@ def favoritas():
     return
 
 
-@recipes_bp.route("/", endpoint="bloqueadas")
-def bloqueadas():
-    return
-
-
 @recipes_bp.route("/<int:receita_id>")
 def ver(receita_id):
     receita = obter_receita_por_id(receita_id)
