@@ -9,24 +9,21 @@ block content %}
     <h3>{{ receita.titulo }}</h3>
     <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-    <div class="action-buttons">
-      <!-- Ver Receita -->
-      <a
-        href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
-        class="btn btn-primary"
-        >Ver receita</a
-      >
+    <a
+      href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+      class="btn btn-primary"
+    >
+      Ver receita
+    </a>
 
-      <!-- Remover dos Favoritos -->
-      <form
-        method="POST"
-        action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
-        style="display: inline"
-      >
-        {{ csrf_token() }}
-        <button type="submit" class="btn btn-danger">Remover</button>
-      </form>
-    </div>
+    <form
+      method="POST"
+      action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
+      style="display: inline"
+    >
+      {{ csrf_token() }}
+      <button type="submit" class="btn btn-danger">Remover</button>
+    </form>
   </div>
   {% endfor %}
 </div>
