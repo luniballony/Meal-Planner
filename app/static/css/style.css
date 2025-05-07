@@ -3333,3 +3333,16 @@ textarea.input-field {
   justify-content: center;
   gap: 1rem;
 }
+.btn,
+.btn-success,
+.btn-danger {
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+pre.recipe-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+}

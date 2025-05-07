@@ -5,11 +5,11 @@ block content %}
 {% if receitas %}
 <div class="recipe-list">
   {% for receita in receitas %}
-  <div class="card">
+  <div class="card" style="margin-bottom: 20px; padding: 15px">
     <h3>{{ receita.titulo }}</h3>
     <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-    <div style="display: flex; gap: 10px">
+    <div style="display: flex; gap: 10px; align-items: center">
       <a
         href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
         class="btn btn-success"
@@ -20,6 +20,7 @@ block content %}
       <form
         method="POST"
         action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+        style="margin: 0"
       >
         {{ csrf_token() }}
         <button type="submit" class="btn btn-danger">Desbloquear</button>
