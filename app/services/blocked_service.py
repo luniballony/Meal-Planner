@@ -21,3 +21,14 @@ def listar_bloqueadas(user_id):
         .filter(BlockedRecipe.utilizador_id == user_id)
         .all()
     )
+
+
+def desbloquear_receita(user_id, receita_id):
+    bloqueada = BlockedRecipe.query.filter_by(
+        utilizador_id=user_id, receita_id=receita_id
+    ).first()
+    if bloqueada:
+        db.session.delete(bloqueada)
+        db.session.commit()
+        return True
+    return False

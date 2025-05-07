@@ -111,3 +111,21 @@ def bloqueadas():
 
     receitas = listar_bloqueadas(user_id)
     return render_template("recipes/bloqueadas.html", receitas=receitas)
+
+
+@recipes_bp.route("/desbloquear/<int:receita_id>", methods=["POST"])
+def desbloquear(receita_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Precisas de iniciar sessão para desbloquear receitas.", "warning")
+        return redirect(url_for("auth.login"))
+
+    from app.services.blocked_service import desbloquear_receita
+
+    sucesso = desbloquear_receita(user_id, receita_id)
+
+    if sucesso:
+        flash("Receita desbloqueada com sucesso!", "success")
+    else:
+        flash("A receita não estava bloqueada.", "info")
+    return redirect(url_for("recipes.bloqueadas"))

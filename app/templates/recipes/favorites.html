@@ -9,21 +9,22 @@ block content %}
     <h3>{{ receita.titulo }}</h3>
     <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-    <a
-      href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
-      class="btn btn-primary"
-    >
-      Ver receita
-    </a>
+    <div style="display: flex; gap: 10px">
+      <a
+        href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+        class="btn btn-success"
+      >
+        Ver receita
+      </a>
 
-    <form
-      method="POST"
-      action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
-      style="display: inline"
-    >
-      {{ csrf_token() }}
-      <button type="submit" class="btn btn-danger">Remover</button>
-    </form>
+      <form
+        method="POST"
+        action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
+      >
+        {{ csrf_token() }}
+        <button type="submit" class="btn btn-danger">Remover</button>
+      </form>
+    </div>
   </div>
   {% endfor %}
 </div>
