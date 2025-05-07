@@ -1,15 +1,19 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, session, request
+from flask import Blueprint, render_template, redirect, url_for, flash, session
 from app.forms.recipe_form import RecipeForm
+from app.forms.favorites_form import AdicionarFavoritoForm
+from app.forms.block_recipe_form import BloquearReceitaForm
 from app.services.recipe_service import (
     criar_receita,
     listar_receitas,
     obter_receita_por_id,
 )
 from app.services.category_service import listar_categorias
+from app.services.blocked_service import (
+    bloquear_receita,
+    listar_bloqueadas,
+    desbloquear_receita,
+)
 from collections import defaultdict
-from app.forms.favorites_form import AdicionarFavoritoForm
-from app.services.blocked_service import bloquear_receita, listar_bloqueadas
-
 
 recipes_bp = Blueprint("recipes", __name__, url_prefix="/receitas")
 
@@ -21,13 +25,10 @@ def submeter():
         return redirect(url_for("auth.login"))
 
     form = RecipeForm()
-
-    # Carregar categorias para o dropdown
     categorias = listar_categorias()
     form.categoria_id.choices = [(c.id, c.nome) for c in categorias]
 
     if form.validate_on_submit():
-        # Modificação aqui: todas as receitas vão para aprovação, independente da opção 'publica'
         dados = {
             "titulo": form.titulo.data,
             "descricao": form.descricao.data,
@@ -37,16 +38,13 @@ def submeter():
             "dificuldade": form.dificuldade.data,
             "tags": form.tags.data,
             "categoria_id": form.categoria_id.data,
-            "publicada": False,  # Todas as receitas começam como não publicadas
-            # Apenas admins (nível 3) podem aprovar diretamente
+            "publicada": False,
             "aprovada": True if session.get("user_nivel") == 3 else False,
             "fonte": "utilizador",
         }
 
-        # Guardamos a preferência do usuário para quando o admin aprovar
         publica_quando_aprovada = form.publica.data
-
-        nova_receita = criar_receita(dados, session["user_id"], publica_quando_aprovada)
+        criar_receita(dados, session["user_id"], publica_quando_aprovada)
         flash("Receita submetida com sucesso! Aguarda aprovação.", "success")
         return redirect(url_for("recipes.listar"))
 
@@ -60,19 +58,12 @@ def listar():
         return redirect(url_for("auth.login"))
 
     receitas = listar_receitas()
-
-    # Agrupar receitas por nome da categoria (com fallback se for None)
     agrupadas = defaultdict(list)
     for r in receitas:
         nome_categoria = r.categoria.nome if r.categoria else "Sem categoria"
         agrupadas[nome_categoria].append(r)
 
     return render_template("recipes/listar.html", receitas_por_categoria=agrupadas)
-
-
-@recipes_bp.route("/", endpoint="favoritas")
-def favoritas():
-    return
 
 
 @recipes_bp.route("/<int:receita_id>")
@@ -86,8 +77,14 @@ def ver(receita_id):
         flash("Receita não encontrada.", "danger")
         return redirect(url_for("recipes.listar"))
 
-    form = AdicionarFavoritoForm()  # <- Adiciona esta linha
-    return render_template("recipes/ver.html", receita=receita, form=form)
+    favorito_form = AdicionarFavoritoForm()
+    bloquear_form = BloquearReceitaForm()
+    return render_template(
+        "recipes/ver.html",
+        receita=receita,
+        form=favorito_form,
+        bloquear_form=bloquear_form,
+    )
 
 
 @recipes_bp.route("/bloquear/<int:receita_id>", methods=["POST"])
@@ -119,8 +116,6 @@ def desbloquear(receita_id):
     if not user_id:
         flash("Precisas de iniciar sessão para desbloquear receitas.", "warning")
         return redirect(url_for("auth.login"))
-
-    from app.services.blocked_service import desbloquear_receita
 
     sucesso = desbloquear_receita(user_id, receita_id)
 
