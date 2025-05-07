@@ -69,10 +69,22 @@ def listar():
 
 @recipes_bp.route("/<int:receita_id>")
 def ver(receita_id):
+    user_id = session.get("user_id")
     receita = obter_receita_por_id(receita_id)
+
+    # Impede visualizar receita bloqueada
+    from app.models import BlockedRecipe
+
+    bloqueada = BlockedRecipe.query.filter_by(
+        utilizador_id=user_id, receita_id=receita_id
+    ).first()
+    if bloqueada:
+        flash("Esta receita está bloqueada.", "warning")
+        return redirect(url_for("recipes.listar"))
+
     if not receita or (
         not receita.publicada
-        and receita.utilizador_id != session.get("user_id")
+        and receita.utilizador_id != user_id
         and session.get("user_nivel") != 3
     ):
         flash("Receita não encontrada.", "danger")

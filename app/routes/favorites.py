@@ -15,6 +15,15 @@ def adicionar(receita_id):
         flash("Precisas de iniciar sessão para adicionar favoritos.", "warning")
         return redirect(url_for("auth.login"))
 
+    from app.models import BlockedRecipe
+
+    bloqueada = BlockedRecipe.query.filter_by(
+        utilizador_id=user_id, receita_id=receita_id
+    ).first()
+    if bloqueada:
+        flash("Não podes adicionar uma receita bloqueada aos favoritos.", "warning")
+        return redirect(url_for("recipes.listar"))
+
     adicionar_favorito(user_id, receita_id)
     flash("Receita adicionada aos favoritos!", "success")
     return redirect(url_for("main.home"))
