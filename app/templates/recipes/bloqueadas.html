@@ -1,37 +1,36 @@
 {% extends "base.html" %} {% block title %}Receitas Bloqueadas{% endblock %} {%
 block content %}
-<div class="container">
-  <h2>As tuas receitas bloqueadas</h2>
+<h2>As tuas receitas bloqueadas</h2>
 
-  {% if receitas %}
-  <div class="recipe-list">
-    {% for receita in receitas %}
-    <div class="card">
-      <h3>{{ receita.titulo }}</h3>
-      <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
+{% if receitas %}
+<div class="recipe-list">
+  {% for receita in receitas %}
+  <div class="card">
+    <h3>{{ receita.titulo }}</h3>
+    <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-      <div style="display: flex; gap: 10px">
-        <a
-          href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
-          class="btn btn-primary"
-          >Ver receita</a
-        >
+    <div style="display: flex; gap: 10px">
+      <a
+        href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+        class="btn btn-success"
+      >
+        Ver receita
+      </a>
 
-        <form
-          method="POST"
-          action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
-        >
-          {{ csrf_token() }}
-          <button type="submit" class="btn btn-danger">Desbloquear</button>
-        </form>
-      </div>
+      <form
+        method="POST"
+        action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+      >
+        {{ csrf_token() }}
+        <button type="submit" class="btn btn-danger">Desbloquear</button>
+      </form>
     </div>
-    {% endfor %}
   </div>
-  {% else %}
-  <p>Não bloqueaste nenhuma receita ainda.</p>
-  {% endif %}
-
-  <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+  {% endfor %}
 </div>
+{% else %}
+<p>Não bloqueaste nenhuma receita ainda.</p>
+{% endif %}
+
+<a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
 {% endblock %}
