@@ -32,3 +32,19 @@ def desbloquear_receita(user_id, receita_id):
         db.session.commit()
         return True
     return False
+
+
+def listar_nao_bloqueadas(user_id):
+    # Obtem os IDs das receitas bloqueadas
+    subquery = (
+        db.session.query(BlockedRecipe.receita_id)
+        .filter(BlockedRecipe.utilizador_id == user_id)
+        .subquery()
+    )
+
+    # Retorna as receitas que NÃO estão na lista de bloqueadas
+    return (
+        db.session.query(Recipe)
+        .filter(~Recipe.id.in_(subquery))
+        .all()
+    )

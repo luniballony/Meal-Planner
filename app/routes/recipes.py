@@ -13,6 +13,7 @@ from app.services.blocked_service import (
     bloquear_receita,
     listar_bloqueadas,
     desbloquear_receita,
+    listar_nao_bloqueadas,
 )
 from collections import defaultdict
 
@@ -58,7 +59,9 @@ def listar():
         flash("Precisas de iniciar sessão para ver receitas.", "warning")
         return redirect(url_for("auth.login"))
 
-    receitas = listar_receitas()
+    user_id = session.get("user_id")
+    ''' oculta receitas bloqueadas '''
+    receitas = listar_nao_bloqueadas(user_id)
     agrupadas = defaultdict(list)
     for r in receitas:
         nome_categoria = r.categoria.nome if r.categoria else "Sem categoria"

@@ -56,58 +56,58 @@ block content %}
 
       <div class="recipes-grid">
         {% for receita in receitas %}
-        <div
-          class="recipe-card"
-          data-time="{{ receita.tempo_preparacao }}"
-          data-tags="{{ receita.tags|lower }}"
-          data-title="{{ receita.titulo|lower }}"
-        >
-          <div class="recipe-card-header">
-            <h4>{{ receita.titulo }}</h4>
-          </div>
+          <div
+            class="recipe-card"
+            data-time="{{ receita.tempo_preparacao }}"
+            data-tags="{{ receita.tags|lower }}"
+            data-title="{{ receita.titulo|lower }}"
+          >
+            <div class="recipe-card-header">
+              <h4>{{ receita.titulo }}</h4>
+            </div>
 
-          <div class="recipe-card-content">
-            <div class="recipe-meta">
-              <div class="meta-item">
-                <i class="fas fa-clock"></i>
-                <span>{{ receita.tempo_preparacao }} min</span>
+            <div class="recipe-card-content">
+              <div class="recipe-meta">
+                <div class="meta-item">
+                  <i class="fas fa-clock"></i>
+                  <span>{{ receita.tempo_preparacao }} min</span>
+                </div>
+                {% if receita.dificuldade %}
+                <div class="meta-item">
+                  <i class="fas fa-chart-line"></i>
+                  <span>{{ receita.dificuldade }}</span>
+                </div>
+                {% endif %}
               </div>
-              {% if receita.dificuldade %}
-              <div class="meta-item">
-                <i class="fas fa-chart-line"></i>
-                <span>{{ receita.dificuldade }}</span>
+
+              {% if receita.tags %}
+              <div class="recipe-tags">
+                {% for tag in receita.tags.split(',') %}
+                <span class="recipe-tag">{{ tag.strip() }}</span>
+                {% endfor %}
               </div>
               {% endif %}
-            </div>
 
-            {% if receita.tags %}
-            <div class="recipe-tags">
-              {% for tag in receita.tags.split(',') %}
-              <span class="recipe-tag">{{ tag.strip() }}</span>
-              {% endfor %}
-            </div>
-            {% endif %}
+              <div class="recipe-ingredients">
+                <h5>
+                  <i class="fas fa-shopping-basket"></i>
+                  Ingredientes
+                </h5>
+                <div class="ingredients-preview">
+                  {{ receita.ingredientes|truncate(100) }}
+                </div>
+              </div>
 
-            <div class="recipe-ingredients">
-              <h5>
-                <i class="fas fa-shopping-basket"></i>
-                Ingredientes
-              </h5>
-              <div class="ingredients-preview">
-                {{ receita.ingredientes|truncate(100) }}
+              <div class="recipe-actions">
+                <a
+                  href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+                  class="btn btn-primary"
+                >
+                  <i class="fas fa-eye"></i> Ver receita
+                </a>
               </div>
             </div>
-
-            <div class="recipe-actions">
-              <a
-                href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
-                class="btn btn-primary"
-              >
-                <i class="fas fa-eye"></i> Ver receita
-              </a>
-            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
     </div>

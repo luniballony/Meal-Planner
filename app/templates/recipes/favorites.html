@@ -1,36 +1,41 @@
 {% extends "base.html" %} {% block title %}Receitas Favoritas{% endblock %} {%
 block content %}
-<h2>As tuas receitas favoritas</h2>
 
-{% if receitas %}
-<div class="recipe-list">
-  {% for receita in receitas %}
-  <div class="card">
-    <h3>{{ receita.titulo }}</h3>
-    <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
+<div class="recipes-container">
+  <div class="recipes-header">
+    <h2>As tuas receitas favoritas</h2>
 
-    <div style="display: flex; gap: 10px">
-      <a
-        href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
-        class="btn btn-success"
-      >
-        Ver receita
-      </a>
+    {% if receitas %}
+    <div class="recipes-grid">
+      {% for receita in receitas %}
+      <div class="card">
+        <h3>{{ receita.titulo }}</h3>
+        <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-      <form
-        method="POST"
-        action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
-      >
-        {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
-        btn-danger") }}
-      </form>
+        <div style="display: flex; gap: 10px">
+          <a
+            href="{{ url_for('recipes.ver', receita_id=receita.id) }}"
+            class="btn btn-success"
+          >
+            Ver receita
+          </a>
+
+          <form
+            method="POST"
+            action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
+          >
+            {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
+            btn-danger") }}
+          </form>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </div>
-  {% endfor %}
-</div>
-{% else %}
-<p>Não adicionaste receitas aos favoritos ainda.</p>
-{% endif %}
+    {% else %}
+    <p>Não adicionaste receitas aos favoritos ainda.</p>
+    {% endif %}
 
-<a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+  </div>
+</div>
 {% endblock %}
