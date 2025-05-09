@@ -1,5 +1,6 @@
 from app.models.recipe import Recipe
 from app.db import db
+from app.models import BlockedRecipe
 from sqlalchemy import or_
 from flask import session
 
@@ -71,8 +72,23 @@ def listar_receitas():
                 Recipe.utilizador_id == user_id
             )
         )
+        
+        # Obtem os IDs das receitas bloqueadas
+        subquery = (
+            db.session.query(BlockedRecipe.receita_id)
+            .filter(BlockedRecipe.utilizador_id == user_id)
+            .subquery()
+        )
+
+        # Retorna as receitas que NÃO estão na lista de bloqueadas
+        return (
+            db.session.query(Recipe)
+            .filter(~Recipe.id.in_(subquery))
+            .all()
+        )
     else:
-        query = query.filter_by(publicada=True)
+        query = query.filter_by(publicada=True)  
+        
 
     return query.order_by(Recipe.data_submetida.desc()).all()
 

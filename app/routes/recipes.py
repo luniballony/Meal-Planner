@@ -59,9 +59,9 @@ def listar():
         flash("Precisas de iniciar sessão para ver receitas.", "warning")
         return redirect(url_for("auth.login"))
 
-    user_id = session.get("user_id")
+    # user_id = session.get("user_id")
     ''' oculta receitas bloqueadas '''
-    receitas = listar_nao_bloqueadas(user_id)
+    receitas = listar_receitas()
     agrupadas = defaultdict(list)
     for r in receitas:
         nome_categoria = r.categoria.nome if r.categoria else "Sem categoria"
