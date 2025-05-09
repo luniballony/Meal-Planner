@@ -82,8 +82,16 @@ def ver(receita_id):
         utilizador_id=user_id, receita_id=receita_id
     ).first()
     if bloqueada:
+        '''
         flash("Esta receita está bloqueada.", "warning")
-        return redirect(url_for("recipes.listar"))
+        return redirect(url_for("recipes.listar")) ''' 
+
+        ''' se a receita estiver bloqueada 
+                -> remover botão de bloquear a receita 
+                -> remover botão de adicionar favoritos
+                -> adicionar botão de desbloqueio '''
+        pass 
+    
 
     if not receita or (
         not receita.publicada
