@@ -30,7 +30,7 @@ def adicionar(receita_id):
 
     adicionar_favorito(user_id, receita_id)
     flash("Receita adicionada aos favoritos!", "success")
-    return redirect(url_for("main.home"))
+    return redirect(url_for("recipes.listar"))
 
 
 @favorites_bp.route("/ver", methods=["GET"])
