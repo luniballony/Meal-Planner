@@ -69,8 +69,8 @@ def remover(receita_id):
 
 
 # lista receita individual
-@favorites_bp.route("/ver/<int:receita_id>", methods=["GET"])
-def ver_receita(receita_id): 
+@favorites_bp.route("/ver_receita_favorita/<int:receita_id>", methods=["GET"])
+def ver_receita_favorita(receita_id): 
     user_id = session.get("user_id")
     receita = obter_receita_por_id(receita_id)
 
