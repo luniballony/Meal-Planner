@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %}{{ receita.titulo }}{% endblock %} {%
+block content %}
+<div class="card recipe-card">
+  <h2 class="recipe-title">{{ receita.titulo }}</h2>
+
+  <div style="margin-bottom: 10px; display: flex; gap: 10px">
+    <form
+      method="POST"
+      action="{{ url_for('favorites.remover', receita_id=receita.id)}}"
+    >
+      Remover
+    </form>
+    
+  </div>
+
+  <div class="recipe-meta">
+    <p><strong>Categoria:</strong> {{ receita.categoria.nome }}</p>
+    <p>
+      <strong>Tempo de preparação:</strong> {{ receita.tempo_preparacao }}
+      minutos
+    </p>
+    <p>
+      <strong>Dificuldade:</strong>
+      {% if receita.dificuldade == 1 %}Fácil {% elif receita.dificuldade == 2
+      %}Médio {% else %}Difícil{% endif %}
+    </p>
+    <p><strong>Tags:</strong> {{ receita.tags }}</p>
+  </div>
+
+  <div class="recipe-section">
+    <h3>Ingredientes</h3>
+    <pre class="recipe-content">{{ receita.ingredientes }}</pre>
+  </div>
+
+  <div class="recipe-section">
+    <h3>Instruções</h3>
+    <pre class="recipe-content">{{ receita.instrucoes }}</pre>
+  </div>
+</div>
+
+<div class="form-actions" style="margin-top: 20px">
+  <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary"
+    >← Voltar à lista</a
+  >
+</div>
+{% endblock %}

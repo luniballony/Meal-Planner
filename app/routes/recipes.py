@@ -149,3 +149,30 @@ def desbloquear(receita_id):
     else:
         flash("A receita não estava bloqueada.", "info")
     return redirect(url_for("recipes.bloqueadas"))
+
+
+# lista receita individual
+@recipes_bp.route("/ver_receita_bloqueada/<int:receita_id>", methods=["GET"])
+def ver_receita_bloqueada(receita_id): 
+    user_id = session.get("user_id")
+    receita = obter_receita_por_id(receita_id)
+
+    if not user_id:
+        flash("Precisas de iniciar sessão para ver as tuas receitas bloqueadas.", "warning")
+        return redirect(url_for("auth.login"))
+    
+    if not receita or (
+        not receita.publicada
+        and receita.utilizador_id != user_id
+        and session.get("user_nivel") != 3
+    ):
+        flash("Receita não encontrada.", "danger")
+        return redirect(url_for("recipes.listar"))
+    
+
+    unblock_form = DesbloquearReceitaForm()
+    return render_template(
+        "recipes/ver_bloqueadas.html",
+        receita=receita,
+        unblock_form=unblock_form
+    )
