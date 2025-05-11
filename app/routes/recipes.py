@@ -170,9 +170,9 @@ def ver_receita_bloqueada(receita_id):
         return redirect(url_for("recipes.listar"))
     
 
-    unblock_form = DesbloquearReceitaForm()
+    form = DesbloquearReceitaForm()
     return render_template(
         "recipes/ver_bloqueadas.html",
         receita=receita,
-        unblock_form=unblock_form
+        form=form
     )

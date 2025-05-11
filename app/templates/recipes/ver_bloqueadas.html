@@ -3,13 +3,12 @@ block content %}
 <div class="card recipe-card">
   <h2 class="recipe-title">{{ receita.titulo }}</h2>
 
-  <div style="margin-bottom: 10px; display: flex; gap: 10px">
-    <form
-      method="POST"
-      action="{{ url_for('favorites.remover', receita_id=receita.id)}}"
-    >
-      Remover
-    </form>
+  <form
+        method="POST"
+        action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+      >
+        {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
+      </form>
     
   </div>
 
