@@ -1,35 +1,41 @@
 {% extends "base.html" %} {% block title %}Receitas Bloqueadas{% endblock %} {%
 block content %}
-<h2>As tuas receitas bloqueadas</h2>
 
-{% if receitas %}
-<div class="recipe-list">
-  {% for receita in receitas %}
-  <div class="card">
-    <h3>{{ receita.titulo }}</h3>
-    <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
+<div class="recipes-container">
+  <div class="recipes-header">
+        
+    <h2>As tuas receitas bloqueadas</h2>
 
-    <div style="display: flex; gap: 10px">
-      <a
-        href="{{ url_for('recipes.ver_receita_bloqueada', receita_id=receita.id) }}"
-        class="btn btn-success"
-      >
-        Ver receita
-      </a>
+    {% if receitas %}
+    <div class="recipe-list">
+      {% for receita in receitas %}
+      <div class="card">
+        <h3>{{ receita.titulo }}</h3>
+        <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
 
-      <form
-        method="POST"
-        action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
-      >
-        {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
-      </form>
+        <div style="display: flex; gap: 10px">
+          <a
+            href="{{ url_for('recipes.ver_receita_bloqueada', receita_id=receita.id) }}"
+            class="btn btn-success"
+          >
+            Ver receita
+          </a>
+
+          <form
+            method="POST"
+            action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+          >
+            {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
+          </form>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </div>
-  {% endfor %}
-</div>
-{% else %}
-<p>Não bloqueaste nenhuma receita ainda.</p>
-{% endif %}
+    {% else %}
+    <p>Não bloqueaste nenhuma receita ainda.</p>
+    {% endif %}
 
-<a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+  </div>
+</div>
 {% endblock %}
