@@ -11,6 +11,7 @@ from app.routes.admin import admin_bp
 from app.routes.main import main_bp
 from app.routes.categories import categories_bp
 from app.routes.favorites import favorites_bp
+from app.routes.blocked import blocked_bp
 
 
 # Instância de proteção CSRF
@@ -32,6 +33,7 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(categories_bp)
     app.register_blueprint(favorites_bp)
+    app.register_blueprint(blocked_bp)
 
 
     # Adicionar filtros personalizados para templates

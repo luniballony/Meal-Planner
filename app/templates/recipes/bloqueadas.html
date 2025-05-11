@@ -15,7 +15,7 @@ block content %}
 
         <div style="display: flex; gap: 10px">
           <a
-            href="{{ url_for('recipes.ver_receita_bloqueada', receita_id=receita.id) }}"
+            href="{{ url_for('blocked.ver_receita_bloqueada', receita_id=receita.id) }}"
             class="btn btn-success"
           >
             Ver receita
@@ -23,7 +23,7 @@ block content %}
 
           <form
             method="POST"
-            action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+            action="{{ url_for('blocked.desbloquear', receita_id=receita.id) }}"
           >
             {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
           </form>

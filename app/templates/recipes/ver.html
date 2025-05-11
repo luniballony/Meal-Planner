@@ -13,7 +13,7 @@ block content %}
 
     <form
       method="POST"
-      action="{{ url_for('recipes.bloquear', receita_id=receita.id) }}"
+      action="{{ url_for('blocked.bloquear', receita_id=receita.id) }}"
     >
       {{ bloquear_form.hidden_tag() }} {{ bloquear_form.submit(class="btn
       btn-danger") }}

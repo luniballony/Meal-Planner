@@ -6,7 +6,7 @@ block content %}
   <div style="margin-bottom: 10px; display: flex; gap: 10px">
     <form
       method="POST"
-      action="{{ url_for('recipes.desbloquear', receita_id=receita.id) }}"
+      action="{{ url_for('blocked.desbloquear', receita_id=receita.id) }}"
     >
       {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
     </form>
