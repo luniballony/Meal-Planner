@@ -4,12 +4,13 @@ block content %}
   <h2 class="recipe-title">{{ receita.titulo }}</h2>
 
   <div style="margin-bottom: 10px; display: flex; gap: 10px">
-    <a
-            href="{{ url_for('favorites.remover', receita_id=receita.id) }}" 
-            class="btn btn-success"
-          >
-            Remover Dos Favoritos
-          </a>
+    <form
+      method="POST"
+      action="{{ url_for('favorites.remover', receita_id=receita.id)}}"
+    >
+      {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
+      btn-danger") }}
+    </form>
     
   </div>
 
