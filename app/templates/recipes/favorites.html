@@ -14,18 +14,9 @@ block content %}
 
         <div style="display: flex; gap: 10px">
           <a
-            href="{{ url_for('favorites.ver_receita', receita_id=receita.id) }}" 
+            href="{{ url_for('favorites.ver_receita_favorita', receita_id=receita.id) }}" 
             class="btn btn-success"
           >
-
-          <!--
-          
-          <a
-            href="{{ url_for('recipes.ver', receita_id=receita.id) }}" 
-            class="btn btn-success"
-          >
-
-          -->
             Ver receita
           </a>
 
