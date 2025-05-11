@@ -34,6 +34,7 @@ def desbloquear_receita(user_id, receita_id):
     return False
 
 
+# acho que de momento não está a ser usada
 def listar_nao_bloqueadas(user_id):
     # Obtem os IDs das receitas bloqueadas
     subquery = (

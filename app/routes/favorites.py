@@ -5,6 +5,10 @@ from app.services.favorites_service import adicionar_favorito, remover_favorito
 from app.forms.favorites_form import AdicionarFavoritoForm
 from app.forms.remove_favorites_form import RemoverFavoritoForm
 
+from app.services.recipe_service import obter_receita_por_id
+from app.forms.block_recipe_form import BloquearReceitaForm
+
+
 favorites_bp = Blueprint("favorites", __name__, url_prefix="/favorites")
 
 
@@ -62,3 +66,29 @@ def remover(receita_id):
     else:
         flash("A receita não estava nos teus favoritos.", "info")
     return redirect(url_for("favorites.ver_favoritos"))
+
+
+# lista receita individual
+@favorites_bp.route("/ver/<int:receita_id>", methods=["GET"])
+def ver_receita(receita_id): 
+    user_id = session.get("user_id")
+    receita = obter_receita_por_id(receita_id)
+
+    if not user_id:
+        flash("Precisas de iniciar sessão para ver as tuas receitas favoritas.", "warning")
+        return redirect(url_for("auth.login"))
+    
+    if not receita or (
+        not receita.publicada
+        and receita.utilizador_id != user_id
+        and session.get("user_nivel") != 3
+    ):
+        flash("Receita não encontrada.", "danger")
+        return redirect(url_for("recipes.listar"))
+    
+    remover_form = RemoverFavoritoForm()
+    return render_template(
+        "recipes/ver_favoritas.html",
+        receita=receita,
+        remover_form=remover_form
+    )
