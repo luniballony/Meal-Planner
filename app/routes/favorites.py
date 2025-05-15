@@ -92,3 +92,27 @@ def ver_receita_favorita(receita_id):
         receita=receita,
         remover_form=remover_form
     )
+
+
+# verifica se receita está marcada como favorita
+@favorites_bp.route("/verificar_favorita/<int:receita_id>", methods=["GET"])
+def verificar_favorita(receita_id): 
+    user_id = session.get("user_id")
+    receita = obter_receita_por_id(receita_id)
+
+    if not user_id:
+        flash("Precisas de iniciar sessão para avançar.", "warning")
+        return redirect(url_for("auth.login"))
+    
+    if not receita or (
+        not receita.publicada
+        and receita.utilizador_id != user_id
+        and session.get("user_nivel") != 3
+    ):
+        flash("Receita não encontrada.", "danger")
+        return redirect(url_for("recipes.listar"))
+    
+    
+    favorita = Favorites.query.filter_by(receita_id=receita_id, utilizador_id=user_id).first()
+    return favorita is not None
+    

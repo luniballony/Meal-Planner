@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from app.forms.recipe_form import RecipeForm
 from app.forms.favorites_form import AdicionarFavoritoForm
+from app.forms.remove_favorites_form import RemoverFavoritoForm
 from app.forms.block_recipe_form import BloquearReceitaForm
 from app.forms.unblock_form import DesbloquearReceitaForm
 from app.services.recipe_service import (
@@ -15,6 +16,7 @@ from app.services.blocked_service import (
     desbloquear_receita,
     listar_nao_bloqueadas,
 )
+from app.routes.favorites import verificar_favorita
 from collections import defaultdict
 
 recipes_bp = Blueprint("recipes", __name__, url_prefix="/receitas")
@@ -81,18 +83,17 @@ def ver(receita_id):
     bloqueada = BlockedRecipe.query.filter_by(
         utilizador_id=user_id, receita_id=receita_id
     ).first()
-    if bloqueada:
-        '''
+    ''' if bloqueada:
+        
         flash("Esta receita está bloqueada.", "warning")
-        return redirect(url_for("recipes.listar")) ''' 
+        return redirect(url_for("recipes.listar"))  
 
-        ''' se a receita estiver bloqueada 
+        se a receita estiver bloqueada 
                 -> remover botão de bloquear a receita 
                 -> remover botão de adicionar favoritos
-                -> adicionar botão de desbloqueio '''
-        pass 
+                -> adicionar botão de desbloqueio 
+        pass '''
     
-
     if not receita or (
         not receita.publicada
         and receita.utilizador_id != user_id
@@ -100,6 +101,12 @@ def ver(receita_id):
     ):
         flash("Receita não encontrada.", "danger")
         return redirect(url_for("recipes.listar"))
+    
+    # verifica se está nas favoritas
+    receita_favorita = verificar_favorita(receita_id)
+
+    # permite adicionar botão remover fav 
+    remover_form = RemoverFavoritoForm()
 
     favorito_form = AdicionarFavoritoForm()
     bloquear_form = BloquearReceitaForm()
@@ -108,5 +115,7 @@ def ver(receita_id):
         receita=receita,
         form=favorito_form,
         bloquear_form=bloquear_form,
+        remover_form=remover_form,
+        receita_favorita=receita_favorita,
     )
 

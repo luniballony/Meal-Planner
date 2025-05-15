@@ -3,22 +3,35 @@ block content %}
 <div class="card recipe-card">
   <h2 class="recipe-title">{{ receita.titulo }}</h2>
 
-  <div style="margin-bottom: 10px; display: flex; gap: 10px">
+  
+  {% if receita_favorita  %} 
     <form
       method="POST"
-      action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}"
+      action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
     >
-      {{ form.hidden_tag() }} {{ form.submit(class="btn btn-success") }}
-    </form>
-
-    <form
-      method="POST"
-      action="{{ url_for('blocked.bloquear', receita_id=receita.id) }}"
-    >
-      {{ bloquear_form.hidden_tag() }} {{ bloquear_form.submit(class="btn
+      {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
       btn-danger") }}
     </form>
-  </div>
+  
+  {% else %}
+    <div style="margin-bottom: 10px; display: flex; gap: 10px">
+      <form
+        method="POST"
+        action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}"
+      >
+        {{ form.hidden_tag() }} {{ form.submit(class="btn btn-success") }}
+      </form>
+
+      <form
+        method="POST"
+        action="{{ url_for('blocked.bloquear', receita_id=receita.id) }}"
+      >
+        {{ bloquear_form.hidden_tag() }} {{ bloquear_form.submit(class="btn
+        btn-danger") }}
+      </form>
+    </div>
+
+  {% endif %}
 
   <div class="recipe-meta">
     <p><strong>Categoria:</strong> {{ receita.categoria.nome }}</p>
