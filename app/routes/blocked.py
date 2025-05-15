@@ -66,7 +66,7 @@ def ver_receita_bloqueada(receita_id):
     receita = obter_receita_por_id(receita_id)
 
     if not user_id:
-        flash("Precisas de iniciar sessão para ver as tuas receitas bloqueadas.", "warning")
+        flash("Precisa de iniciar sessão para ver as suas receitas bloqueadas.", "warning")
         return redirect(url_for("auth.login"))
     
     if not receita or (

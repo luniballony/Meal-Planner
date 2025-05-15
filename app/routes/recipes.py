@@ -10,12 +10,6 @@ from app.services.recipe_service import (
     obter_receita_por_id,
 )
 from app.services.category_service import listar_categorias
-from app.services.blocked_service import (
-    bloquear_receita,
-    listar_bloqueadas,
-    desbloquear_receita,
-    listar_nao_bloqueadas,
-)
 from app.routes.favorites import verificar_favorita
 from collections import defaultdict
 
@@ -80,19 +74,6 @@ def ver(receita_id):
     # Impede visualizar receita bloqueada
     from app.models import BlockedRecipe
 
-    bloqueada = BlockedRecipe.query.filter_by(
-        utilizador_id=user_id, receita_id=receita_id
-    ).first()
-    ''' if bloqueada:
-        
-        flash("Esta receita está bloqueada.", "warning")
-        return redirect(url_for("recipes.listar"))  
-
-        se a receita estiver bloqueada 
-                -> remover botão de bloquear a receita 
-                -> remover botão de adicionar favoritos
-                -> adicionar botão de desbloqueio 
-        pass '''
     
     if not receita or (
         not receita.publicada

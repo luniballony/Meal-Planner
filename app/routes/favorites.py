@@ -25,7 +25,7 @@ def adicionar(receita_id):
         utilizador_id=user_id, receita_id=receita_id
     ).first()
     if bloqueada:
-        flash("Não podes adicionar uma receita bloqueada aos favoritos.", "warning")
+        flash("Não pode adicionar uma receita bloqueada aos favoritos.", "warning")
         return redirect(url_for("recipes.listar"))
 
     adicionar_favorito(user_id, receita_id)
@@ -75,7 +75,7 @@ def ver_receita_favorita(receita_id):
     receita = obter_receita_por_id(receita_id)
 
     if not user_id:
-        flash("Precisas de iniciar sessão para ver as tuas receitas favoritas.", "warning")
+        flash("Precisa de iniciar sessão para ver as suas receitas favoritas.", "warning")
         return redirect(url_for("auth.login"))
     
     if not receita or (

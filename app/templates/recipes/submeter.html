@@ -28,8 +28,8 @@ block content %}
         <h3><i class="fas fa-check-circle"></i> Processo de aprovação</h3>
         <p>
           Todas as receitas passam por um processo de aprovação antes de serem
-          publicadas. Nossos administradores verificarão o conteúdo e aprovarão
-          sua receita em breve.
+          publicadas. Os nossos administradores verificarão o conteúdo e aprovarão
+          a sua receita em breve.
         </p>
       </div>
     </div>
@@ -56,8 +56,7 @@ block content %}
 
         <div class="form-group">
           {{ form.descricao.label(class="form-label") }} {{
-          form.descricao(rows=3, cols=40, class="input-field", placeholder="Uma
-          breve descrição da sua receita...") }} {% if form.descricao.errors %}
+          form.descricao(rows=3, cols=40, class="input-field", placeholder="Uma breve descrição da sua receita...") }} {% if form.descricao.errors %}
           <div class="form-errors">
             {% for error in form.descricao.errors %}
             <span class="error-message">{{ error }}</span>
@@ -70,8 +69,7 @@ block content %}
           <div class="form-group half-width">
             {{ form.tempo_preparacao.label(class="form-label") }}
             <div class="input-with-addon">
-              {{ form.tempo_preparacao(class="input-field", placeholder="Ex:
-              45") }}
+              {{ form.tempo_preparacao(class="input-field", placeholder="Ex: 45") }}
               <span class="input-addon">minutos</span>
             </div>
             {% if form.tempo_preparacao.errors %}
@@ -105,7 +103,7 @@ block content %}
         <div class="form-group">
           {{ form.ingredientes.label(class="form-label") }}
           <div class="input-help">
-            Liste cada ingrediente em uma linha separada, começando com um traço
+            Liste cada ingrediente numa linha separada, começando com um traço
             (-)
           </div>
           {{ form.ingredientes(rows=5, cols=40, class="input-field",
@@ -125,8 +123,7 @@ block content %}
             Descreva o passo a passo de preparação da receita
           </div>
           {{ form.instrucoes(rows=5, cols=40, class="input-field",
-          placeholder="1. Pré-aqueça o forno a 180°C\n2. Misture os ingredientes
-          secos...") }} {% if form.instrucoes.errors %}
+          placeholder="1. Pré-aqueça o forno a 180°C\n2. Misture os ingredientes secos...") }} {% if form.instrucoes.errors %}
           <div class="form-errors">
             {% for error in form.instrucoes.errors %}
             <span class="error-message">{{ error }}</span>
@@ -155,8 +152,7 @@ block content %}
           <div class="form-group half-width">
             {{ form.tags.label(class="form-label") }}
             <div class="input-help">Separe as tags por vírgulas</div>
-            {{ form.tags(class="input-field", placeholder="Ex: saudável, rápido,
-            vegetariano") }} {% if form.tags.errors %}
+            {{ form.tags(class="input-field", placeholder="Ex: saudável, rápido, vegetariano") }} {% if form.tags.errors %}
             <div class="form-errors">
               {% for error in form.tags.errors %}
               <span class="error-message">{{ error }}</span>
@@ -172,7 +168,7 @@ block content %}
             <span class="checkbox-label">{{ form.publica.label.text }}</span>
           </label>
           <div class="input-help">
-            Marque esta opção se deseja que sua receita seja visível para todos
+            Marque esta opção se deseja que a sua receita seja visível para todos
             os usuários
           </div>
           {% if form.publica.errors %}
