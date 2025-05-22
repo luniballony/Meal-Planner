@@ -87,7 +87,7 @@ def ver(plano_id):
 @meal_plans_bp.route("/apagar/<int:plano_id>", methods=["POST"])
 def apagar_plano(plano_id):
     if eliminar_plano(plano_id):
-        flash("Plano apagado com sucesso.", "success")
+        flash("Plano eliminado com sucesso.", "success")
     else:
         flash("Erro ao apagar plano.", "danger")
     return redirect(url_for("meal_plans.meus_planos"))

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 from app.db import db
-from datetime import datetime, timedelta  # Adicionei timedelta também
+from datetime import datetime, timedelta, timezone
 
 # Importar os blueprints
 from app.routes.auth import auth_bp
@@ -35,13 +35,12 @@ def create_app():
     app.register_blueprint(favorites_bp)
     app.register_blueprint(blocked_bp)
 
-
     # Adicionar filtros personalizados para templates
     @app.template_filter("dias_desde")
     def dias_desde(data):
         """Calcula o número de dias desde uma data até hoje."""
         if data:
-            return (datetime.utcnow() - data).days
+            return (datetime.now(timezone.utc) - data).days
         return 0
 
     # Adicionar funções globais para templates

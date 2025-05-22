@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.db import db
 
 
@@ -7,7 +7,7 @@ class MealPlan(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     data_inicio = db.Column(db.Date, nullable=False)
-    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+    criado_em = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relacionamento com o utilizador
     utilizador_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)

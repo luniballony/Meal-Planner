@@ -47,11 +47,11 @@ def obter_planos_do_utilizador(utilizador_id):
 
 
 def obter_plano_completo(plano_id):
-    return MealPlan.query.get(plano_id)
+    return db.session.get(MealPlan, plano_id)
 
 
 def eliminar_plano(plano_id):
-    plano = MealPlan.query.get(plano_id)
+    plano = db.session.get(MealPlan, plano_id)
     if plano:
         db.session.delete(plano)
         db.session.commit()

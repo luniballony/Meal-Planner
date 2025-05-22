@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.db import db
 from app.models.category import Category
 
@@ -14,7 +14,7 @@ class Recipe(db.Model):
     tempo_preparacao = db.Column(db.Integer, nullable=False)
     dificuldade = db.Column(db.Integer, nullable=False)
     tags = db.Column(db.String(150))
-    data_submetida = db.Column(db.DateTime, default=datetime.utcnow)
+    data_submetida = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     publicada = db.Column(db.Boolean, default=False)
     aprovada = db.Column(db.Boolean, default=False)
     fonte = db.Column(db.String(50), default="utilizador")

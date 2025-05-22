@@ -1,7 +1,7 @@
 from app.models.recipe import Recipe
 from app.db import db
 from app.models import BlockedRecipe
-from sqlalchemy import or_
+from sqlalchemy import or_, select
 from flask import session
 
 
@@ -39,7 +39,7 @@ def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
 
 
 def aprovar_receita(receita_id):
-    receita = Recipe.query.get(receita_id)
+    receita = db.session.get(Recipe, receita_id)
     if receita:
         receita.publicada = receita.publica_quando_aprovada
         receita.aprovada = True
@@ -48,7 +48,7 @@ def aprovar_receita(receita_id):
 
 
 def eliminar_receita(receita_id):
-    receita = Recipe.query.get(receita_id)
+    receita = db.session.get(Recipe, receita_id)
     if receita:
         db.session.delete(receita)
         db.session.commit()
@@ -67,28 +67,17 @@ def listar_receitas():
 
     if user_id:
         query = query.filter(
-            or_(
-                Recipe.publicada == True,
-                Recipe.utilizador_id == user_id
-            )
-        )
-        
-        # Obtem os IDs das receitas bloqueadas
-        subquery = (
-            db.session.query(BlockedRecipe.receita_id)
-            .filter(BlockedRecipe.utilizador_id == user_id)
-            .subquery()
+            or_(Recipe.publicada == True, Recipe.utilizador_id == user_id)
         )
 
-        # Retorna as receitas que NÃO estão na lista de bloqueadas
-        return (
-            db.session.query(Recipe)
-            .filter(~Recipe.id.in_(subquery))
-            .all()
+        # Corrigido: usar select() explicitamente para evitar o warning
+        subquery = select(BlockedRecipe.receita_id).where(
+            BlockedRecipe.utilizador_id == user_id
         )
+
+        return db.session.query(Recipe).filter(~Recipe.id.in_(subquery)).all()
     else:
-        query = query.filter_by(publicada=True)  
-        
+        query = query.filter_by(publicada=True)
 
     return query.order_by(Recipe.data_submetida.desc()).all()
 
@@ -99,10 +88,7 @@ def buscar_receitas(filtros):
     if "search" in filtros:
         termo = f"%{filtros['search']}%"
         query = query.filter(
-            or_(
-                Recipe.titulo.ilike(termo),
-                Recipe.descricao.ilike(termo)
-            )
+            or_(Recipe.titulo.ilike(termo), Recipe.descricao.ilike(termo))
         )
 
     if "categoria" in filtros:

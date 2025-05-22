@@ -70,7 +70,7 @@ def recusar_receita_admin(receita_id):
 @admin_bp.route("/categorias")
 def gerir_categorias():
     if not session.get("user_nivel") == 3:
-        flash("Acesso negado.", "danger")
+        flash("Acesso restrito a administradores.", "danger")
         return redirect(url_for("main.home"))
 
     categorias = listar_categorias()

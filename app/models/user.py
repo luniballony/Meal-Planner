@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.db import db
 
@@ -12,7 +12,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     nivel = db.Column(db.Integer, default=1)  # 1: comum, 2: premium, 3: admin
     ativo = db.Column(db.Boolean, default=True)  # Novo campo
-    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+    criado_em = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
