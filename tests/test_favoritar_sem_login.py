@@ -11,10 +11,8 @@ import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app import create_app, db
-from app.models.user import User
 from app.models.recipe import Recipe
 from app.models.category import Category
-from app.models.favorites import Favorites
 
 
 @pytest.fixture
