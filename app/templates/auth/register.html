@@ -4,9 +4,9 @@ content %}
   <div class="auth-card">
     <div class="auth-header">
       <i class="fas fa-user-plus"></i>
-      <h2>Cria a tua conta</h2>
+      <h2>Crie a sua conta</h2>
       <p class="auth-subtitle">
-        Regista-te para aceder a todas as funcionalidades
+        Regista-se para aceder a todas as funcionalidades
       </p>
     </div>
 
@@ -17,7 +17,7 @@ content %}
         <label for="{{ form.nome.id }}" class="form-label"
           >{{ form.nome.label.text }}</label
         >
-        {{ form.nome(class="input-field", placeholder="Seu nome completo") }} {%
+        {{ form.nome(class="input-field", placeholder="O seu nome completo") }} {%
         for error in form.nome.errors %}
         <small class="error-text">{{ error }}</small>
         {% endfor %}
@@ -46,7 +46,7 @@ content %}
         <label for="{{ form.confirmar_password.id }}" class="form-label"
           >{{ form.confirmar_password.label.text }}</label
         >
-        {{ form.confirmar_password(class="input-field", placeholder="Confirme sua senha") }} {% for error in form.confirmar_password.errors %}
+        {{ form.confirmar_password(class="input-field", placeholder="Confirme a sua senha") }} {% for error in form.confirmar_password.errors %}
         <small class="error-text">{{ error }}</small>
         {% endfor %}
       </div>

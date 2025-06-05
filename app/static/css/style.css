@@ -3346,3 +3346,22 @@ pre.recipe-content {
   font-size: 1rem;
   line-height: 1.6;
 }
+
+
+/* Sobre Nós */
+.about-us-contact {
+  margin-top: 20px;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.about-us-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.about-us-email {
+  margin-bottom: 10px;
+}
+

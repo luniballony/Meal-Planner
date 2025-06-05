@@ -64,7 +64,7 @@ def remover(receita_id):
     if sucesso:
         flash("Receita removida dos favoritos.", "success")
     else:
-        flash("A receita não estava nos teus favoritos.", "info")
+        flash("A receita não estava nos seus favoritos.", "info")
     return redirect(url_for("favorites.ver_favoritos"))
 
 

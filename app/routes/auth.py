@@ -15,7 +15,7 @@ def register():
             nome=form.nome.data, email=form.email.data, password=form.password.data
         )
         if utilizador:
-            flash("Conta criada com sucesso. Já podes iniciar sessão!", "success")
+            flash("Conta criada com sucesso. Já pode iniciar sessão!", "success")
             return redirect(url_for("auth.login"))
         else:
             flash("Já existe uma conta com esse email.", "danger")

@@ -25,13 +25,6 @@
               <i class="fas fa-home"></i> Início
             </a>
 
-            <a
-              href="{{ url_for('main.about') }}"
-              class="nav-item {% if request.endpoint == 'main.about' %}active{% endif %}"
-            >
-              <i class="fas fa-circle-info"></i> Sobre Nos
-            </a>
-
             {% if session.get('user_id') %}
             
             <a
@@ -86,6 +79,14 @@
               </a>
             </div>
             {% endif %} {% endif %}
+
+            <a
+              href="{{ url_for('main.about') }}"
+              class="nav-item {% if request.endpoint == 'main.about' %}active{% endif %}"
+            >
+              <i class="fas fa-circle-info"></i> Sobre Nos
+            </a>
+
           </div>
 
           <div class="right">

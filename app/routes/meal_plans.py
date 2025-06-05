@@ -63,7 +63,7 @@ def criar():
 @meal_plans_bp.route("/meus", endpoint="meus_planos")
 def meus_planos():
     if "user_id" not in session:
-        flash("Precisas de iniciar sessão para ver os teus planos.", "warning")
+        flash("Precisas de iniciar sessão para ver os seus planos.", "warning")
         return redirect(url_for("auth.login"))
 
     planos = obter_planos_do_utilizador(session["user_id"])
