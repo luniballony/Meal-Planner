@@ -81,3 +81,12 @@ def test_bloquear_receita(client):
     # Verificar se o bloqueio foi gravado na BD
     bloqueio = BlockedRecipe.query.filter_by(receita_id=1, utilizador_id=1).first()
     assert bloqueio is not None
+
+    # remover de bloqueadas
+    response_remove = client.post("/blocked/desbloquear/1", follow_redirects=True)
+    assert response_remove.status_code == 200
+    assert "Receita desbloqueada com sucesso!" in response_remove.get_data(as_text=True)
+
+    # Verificar se o bloqueio foi removido na BD
+    bloqueio = BlockedRecipe.query.filter_by(receita_id=1, utilizador_id=1).first()
+    assert bloqueio is None
