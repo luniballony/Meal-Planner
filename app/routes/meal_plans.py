@@ -130,7 +130,15 @@ def editar_plano(plano_id):
                 continue
             try:
                 data_str, refeicao = chave.rsplit("_", 1)
-                data_refeicao = datetime.strptime(data_str, "%Y-%m-%d").date()
+                # Compatibilidade: tenta converter para data, senão é nome do dia
+                try:
+                    data_refeicao = datetime.strptime(data_str, "%Y-%m-%d").date()
+                except ValueError:
+                    if data_str in dias_semana:
+                        idx = dias_semana.index(data_str)
+                        data_refeicao = form.data_inicio.data + timedelta(days=idx)
+                    else:
+                        continue
                 refeicoes_selecionadas[(data_refeicao, refeicao)] = int(receita_id)
             except Exception:
                 continue
