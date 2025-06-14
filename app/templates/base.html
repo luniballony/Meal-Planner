@@ -96,11 +96,17 @@
             <div class="user-greeting">
               <span>Olá, {{ session.get('user_nome') }}</span>
 
-              <a href="{{ url_for('main.home') }}" class="logout-btn">
+              <a 
+                href="{{ url_for('main.home') }}"
+                class="nav-item {% if request.endpoint == 'main.home' %}active{% endif %}"
+              >
                 <i class="fas fa-user"></i> Perfil
               </a>
             
-              <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+              <a 
+                href="{{ url_for('auth.logout') }}"
+                class="nav-item {% if request.endpoint == 'main.logout' %}active{% endif %}"
+              >
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>
@@ -124,7 +130,7 @@
           </div>
         </nav>
         
-          <img src="../static/css/meal_planner_transparent_logo.png" class="nav-logo">
+          <img src="../static/css/meal_planner_transparent_logo.png" class="nav-logo" alt="Meal Planner Logo">
       </div>
     </header>
 

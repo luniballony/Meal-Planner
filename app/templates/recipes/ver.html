@@ -14,7 +14,7 @@ block content %}
     </form>
   
   {% else %}
-    <div style="margin-bottom: 10px; display: flex; gap: 10px">
+    <div style="margin-bottom: 10px; display: flex; justify-content: center; gap: 10px">
       <form
         method="POST"
         action="{{ url_for('favorites.adicionar', receita_id=receita.id) }}"
@@ -58,7 +58,7 @@ block content %}
   </div>
 </div>
 
-<div class="form-actions" style="margin-top: 20px">
+<div class="form-actions" style="margin-top: 20px; justify-content: center">
   <a href="{{ url_for('recipes.listar') }}" class="btn btn-primary"
     >← Voltar à lista</a
   >
