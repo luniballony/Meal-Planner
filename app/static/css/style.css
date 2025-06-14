@@ -101,7 +101,6 @@ ul {
   font-size: 0.85rem;
 }
 
-
 /* ====================================================
    Header e Navegação
    ==================================================== */
@@ -1105,8 +1104,8 @@ footer {
   gap: 10px;
 }
 
-.search-input {
-  flex: 1;
+.search-users {
+  margin-top: 15px;
 }
 
 .action-buttons {
@@ -1754,7 +1753,6 @@ footer {
 }
 
 .profile-footer {
-  margin-top: 30px;
   text-align: center;
 }
 /* ====================================================

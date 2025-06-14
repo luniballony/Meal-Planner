@@ -41,7 +41,7 @@
                 method="POST"
                 action="{{ url_for('admin.bloquear_utilizador', id=utilizador.id) }}"
                 class="inline-form"
-                onsubmit="return confirm('Tem certeza que deseja {{ 'desbloquear' if not utilizador.ativo else 'bloquear' }} este utilizador?');"
+                onsubmit="return confirm(`Tem certeza que deseja {{ 'desbloquear' if not utilizador.ativo else 'bloquear' }} este utilizador?`);"
               >
                 <input
                   type="hidden"
@@ -204,6 +204,7 @@
         <a
           href="{{ url_for('admin.listar_utilizadores') }}"
           class="btn btn-outline"
+          style="margin: 20px;"
         >
           <i class="fas fa-arrow-left"></i> Voltar à Lista de Utilizadores
         </a>
