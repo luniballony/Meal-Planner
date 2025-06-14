@@ -87,6 +87,11 @@ ul {
   cursor: pointer;
 }
 
+.btn-remove {
+  height: 45.6px;
+  width: 116.69px;
+}
+
 .btn-danger:hover {
   background-color: #c82333;
 }

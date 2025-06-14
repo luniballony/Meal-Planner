@@ -2,18 +2,16 @@
 block content %}
 
 <div class="recipes-container">
-  <div class="recipes-header">
-        
+  <div class="recipes-header">        
     <h2>As suas receitas bloqueadas</h2>
 
     {% if receitas %}
-    <div class="recipe-list">
+    <div class="recipes-grid">
       {% for receita in receitas %}
       <div class="card">
         <h3>{{ receita.titulo }}</h3>
         <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
-
-        <div style="display: flex; gap: 10px">
+        <div style="display: flex; justify-content: center; gap: 10px">
           <a
             href="{{ url_for('blocked.ver_receita_bloqueada', receita_id=receita.id) }}"
             class="btn btn-success"
@@ -25,7 +23,7 @@ block content %}
             method="POST"
             action="{{ url_for('blocked.desbloquear', receita_id=receita.id) }}"
           >
-            {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger") }}
+            {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger btn-remove") }}
           </form>
         </div>
       </div>

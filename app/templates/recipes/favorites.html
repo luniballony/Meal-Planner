@@ -11,8 +11,7 @@ block content %}
       <div class="card">
         <h3>{{ receita.titulo }}</h3>
         <p><strong>Tempo:</strong> {{ receita.tempo_preparacao }} min</p>
-
-        <div style="display: flex; gap: 10px">
+        <div style="display: flex; justify-content: center; gap: 10px">
           <a
             href="{{ url_for('favorites.ver_receita_favorita', receita_id=receita.id) }}" 
             class="btn btn-success"
@@ -25,7 +24,7 @@ block content %}
             action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
           >
             {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
-            btn-danger") }}
+            btn-danger btn-remove") }}
           </form>
         </div>
       </div>
