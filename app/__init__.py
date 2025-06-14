@@ -36,10 +36,14 @@ def create_app():
     app.register_blueprint(blocked_bp)
 
     # Adicionar filtros personalizados para templates
+
     @app.template_filter("dias_desde")
     def dias_desde(data):
         """Calcula o número de dias desde uma data até hoje."""
         if data:
+            # Se não tiver timezone, assume UTC (evita erro do naive vs aware)
+            if data.tzinfo is None:
+                data = data.replace(tzinfo=timezone.utc)
             return (datetime.now(timezone.utc) - data).days
         return 0
 
