@@ -94,7 +94,7 @@ block content %}
                   Ingredientes
                 </h5>
                 <div class="ingredients-preview">
-                  {{ receita.ingredientes|truncate(100) }}
+                  {{ receita.ingredientes.strip()|truncate(100) }}
                 </div>
               </div>
 

@@ -28,7 +28,7 @@ meal_plans_bp = Blueprint("meal_plans", __name__, url_prefix="/planos")
 @meal_plans_bp.route("/criar", methods=["GET", "POST"])
 def criar():
     if "user_id" not in session:
-        flash("Tens de iniciar sessão para criar um plano semanal.", "warning")
+        flash("Tem de iniciar sessão para criar um plano semanal.", "warning")
         return redirect(url_for("auth.login"))
 
     form = MealPlanForm()
