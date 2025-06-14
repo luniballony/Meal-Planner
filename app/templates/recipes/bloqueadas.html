@@ -23,7 +23,7 @@ block content %}
             method="POST"
             action="{{ url_for('blocked.desbloquear', receita_id=receita.id) }}"
           >
-            {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger btn-remove") }}
+            {{ form.hidden_tag() }} {{ form.submit(class="btn btn-danger btn-height") }}
           </form>
         </div>
       </div>
@@ -33,7 +33,7 @@ block content %}
     <p>Não bloqueaste nenhuma receita ainda.</p>
     {% endif %}
 
-    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary" ">← Voltar</a>
   </div>
 </div>
 {% endblock %}

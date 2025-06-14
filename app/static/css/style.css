@@ -87,9 +87,8 @@ ul {
   cursor: pointer;
 }
 
-.btn-remove {
+.btn-height{
   height: 45.6px;
-  width: 116.69px;
 }
 
 .btn-danger:hover {
@@ -99,6 +98,10 @@ ul {
 .btn-small {
   padding: 5px 10px;
   font-size: 0.85rem;
+}
+
+.btn-go-back {
+  justify-content: center;
 }
 
 /* ====================================================

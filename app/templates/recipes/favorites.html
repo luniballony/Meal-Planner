@@ -24,7 +24,7 @@ block content %}
             action="{{ url_for('favorites.remover', receita_id=receita.id) }}"
           >
             {{ remover_form.hidden_tag() }} {{ remover_form.submit(class="btn
-            btn-danger btn-remove") }}
+            btn-danger btn-height") }}
           </form>
         </div>
       </div>
@@ -34,7 +34,7 @@ block content %}
     <p>Não adicionaste receitas aos favoritos ainda.</p>
     {% endif %}
 
-    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">← Voltar</a>
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary btn-go-back">← Voltar</a>
   </div>
 </div>
 {% endblock %}
