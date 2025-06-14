@@ -2103,6 +2103,17 @@ footer {
   color: #2196f3;
 }
 
+.action-icon.favorites {
+  background-color: rgba(243, 33, 58, 0.1);
+  color: #ec0b3c;
+}
+
+.action-icon.blocked {
+  background-color: rgba(59, 62, 66, 0.1);
+  color: #282b2e;
+}
+
+
 .action-card h3 {
   margin: 0 0 10px 0;
   color: var(--text-color);
@@ -3358,6 +3369,16 @@ pre.recipe-content {
 
 
 /* Sobre Nós */
+.about-container {
+  background-color: white;
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 25px;
+  text-align: center;  
+  border-bottom: 1px solid #eee;
+}
+
+
 .about-us-contact {
   margin-top: 20px;
   color: var(--primary-color);
