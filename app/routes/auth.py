@@ -27,7 +27,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         utilizador = validar_login(form.email.data, form.password.data)
-        if utilizador:
+        if utilizador == "bloqueado":
+            flash("A sua conta está bloqueada. Contacte o administrador.", "danger")
+        elif utilizador:
             session["user_id"] = utilizador.id
             session["user_nome"] = utilizador.nome
             session["user_nivel"] = utilizador.nivel
@@ -35,6 +37,7 @@ def login():
             return redirect(url_for("main.home"))
         else:
             flash("Credenciais inválidas.", "danger")
+
     return render_template("auth/login.html", form=form)
 
 
