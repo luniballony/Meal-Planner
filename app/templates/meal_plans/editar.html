@@ -27,27 +27,6 @@
           <h3>Refeições por Dia</h3>
         </div>
 
-        {% set dias_pt = {
-          "Monday": "segunda-feira",
-          "Tuesday": "terça-feira",
-          "Wednesday": "quarta-feira",
-          "Thursday": "quinta-feira",
-          "Friday": "sexta-feira",
-          "Saturday": "sábado",
-          "Sunday": "domingo"
-        } %}
-
-        {% set entradas_por_data = {} %}
-        {% for entrada in plano.refeicoes %}
-          {% set chave = entrada.data_refeicao.strftime('%Y-%m-%d') %}
-          {% if chave not in entradas_por_data %}
-            {% set _ = entradas_por_data.update({chave: {}}) %}
-          {% endif %}
-          {% set _ = entradas_por_data[chave].update({entrada.refeicao_tipo: entrada.receita_id}) %}
-        {% endfor %}
-
-        {% set datas_ordenadas = entradas_por_data.keys() | sort %}
-
         <div class="meal-plan-table-container">
           <table class="meal-plan-table">
             <thead>
@@ -59,21 +38,21 @@
               </tr>
             </thead>
             <tbody>
-              {% for data_str in datas_ordenadas %}
+              {% for dia in grelha_editar %}
               <tr>
-                {% set data_parts = data_str.split('-') %}
-                {% set data_obj = namespace(obj=datetime(data_parts[0]|int, data_parts[1]|int, data_parts[2]|int)) %}
                 <td class="day-cell">
-                  <div class="day-label">{{ dias_pt[data_obj.obj.strftime('%A')] | capitalize }}</div>
-                  <div class="date-label">{{ data_obj.obj.strftime('%d/%m/%Y') }}</div>
+                  <div class="day-label">{{ dia.nome }}</div>
+                  <div class="date-label">{{ dia.data.strftime('%d/%m/%Y') }}</div>
                 </td>
                 {% for refeicao in ['pequeno_almoço', 'almoço', 'jantar'] %}
                 <td>
-                  <select name="{{ data_str }}_{{ refeicao }}" class="meal-select">
-                    <option value="">-- Escolher receita --</option>
-                    {% for r in receitas %}
-                      {% set selecionada = entradas_por_data[data_str].get(refeicao) %}
-                      <option value="{{ r.id }}" {% if selecionada == r.id %}selected{% endif %}>{{ r.titulo }}</option>
+                  <select name="{{ dia.data.strftime('%Y-%m-%d') }}_{{ refeicao }}" class="meal-select">
+                    <option value="">-- Escolher --</option>
+                    {% for receita in receitas %}
+                      <option value="{{ receita.id }}"
+                        {% if dia.refeicoes[refeicao]|string == receita.id|string %}selected{% endif %}>
+                        {{ receita.titulo }}
+                      </option>
                     {% endfor %}
                   </select>
                 </td>
@@ -87,7 +66,7 @@
 
       <div class="form-info">
         <i class="fas fa-lightbulb"></i>
-        <p>Dica: Pode deixar refeições em branco se não quiser planejar todas as refeições.</p>
+        <p>Dica: Pode deixar refeições em branco se não quiser planear todas as refeições.</p>
       </div>
 
       <div class="form-actions">

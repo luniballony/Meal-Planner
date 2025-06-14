@@ -103,6 +103,29 @@ def editar_plano(plano_id):
     form = MealPlanForm(obj=plano)
     receitas = listar_receitas()
 
+    # --------- GRELHA DOS 7 DIAS COMPLETA PARA O TEMPLATE ----------
+    dias_semana = ["segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo"]
+    refeicoes = ["pequeno_almoço", "almoço", "jantar"]
+    data_inicio = plano.data_inicio
+
+    # Função utilitária para obter o id da receita planeada (ajusta conforme modelo real)
+    def get_id(plano, dia_data, refeicao):
+        # Exemplo para plano.refeicoes ser uma lista de objetos com atributos data e tipo
+        for r in getattr(plano, "refeicoes", []):
+            if hasattr(r, "data") and hasattr(r, "tipo"):
+                if r.data == dia_data and r.tipo == refeicao:
+                    return r.receita_id
+        return ""
+
+    grelha_editar = []
+    for idx, dia_nome in enumerate(dias_semana):
+        dia_data = data_inicio + timedelta(days=idx)
+        linha = {"nome": dia_nome.capitalize(), "data": dia_data, "refeicoes": {}}
+        for refeicao in refeicoes:
+            linha["refeicoes"][refeicao] = get_id(plano, dia_data, refeicao)
+        grelha_editar.append(linha)
+    # --------- FIM GRELHA DOS 7 DIAS COMPLETA ----------
+
     if request.method == "POST" and form.validate():
         refeicoes_selecionadas = {}
 
@@ -127,6 +150,7 @@ def editar_plano(plano_id):
         form=form,
         receitas=receitas,
         plano=plano,
+        grelha_editar=grelha_editar,
         timedelta=timedelta,
         datetime=datetime,
     )
