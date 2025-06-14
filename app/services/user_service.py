@@ -15,6 +15,8 @@ def criar_utilizador(nome, email, password, nivel=1):
 def validar_login(email, password):
     utilizador = User.query.filter_by(email=email).first()
     if utilizador and utilizador.check_password(password):
+        if not utilizador.ativo:
+            return "bloqueado"
         return utilizador
     return None
 
