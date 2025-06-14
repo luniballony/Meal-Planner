@@ -108,7 +108,7 @@
                 method="POST"
                 action="{{ url_for('admin.bloquear_utilizador', id=user.id) }}"
                 class="inline-form"
-                onsubmit="return confirm('Tem certeza que deseja {{ 'desbloquear' if not user.ativo else 'bloquear' }} este utilizador?');"
+                onsubmit="return confirm(`Tem certeza que deseja {{ 'desbloquear' if not user.ativo else 'bloquear' }} este utilizador?`);"
               >
                 {{ form_apagar.hidden_tag() }}
                 <button type="submit" class="dropdown-item">
