@@ -6,37 +6,24 @@ Testa o processo de registo de utilizador:
 ✅ Tentativa de registo com email já existente
 """
 
-import sys
-import os
 import pytest
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from app import create_app, db
 from app.models.user import User
+from app import db
 
 
-@pytest.fixture
-def client():
-    app = create_app()
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    app.config["WTF_CSRF_ENABLED"] = False
+@pytest.fixture(autouse=True)
+def setup_utilizador_existente(client):
+    """
+    Cria um utilizador pré-existente para testar o email duplicado.
+    """
+    with client.application.app_context():
 
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-
-        # Criar um utilizador pré-existente para testar email duplicado
         utilizador = User(
             nome="Utilizador Existente", email="existente@email.com", nivel=1
         )
         utilizador.set_password("senha123")
         db.session.add(utilizador)
         db.session.commit()
-
-    with app.test_client() as client:
-        yield client
 
 
 def test_registo_valido(client):
@@ -49,7 +36,7 @@ def test_registo_valido(client):
             "nome": "Novo Utilizador",
             "email": "novo@email.com",
             "password": "senha123",
-            "confirmar_password": "senha123",  # <- nome corrigido
+            "confirmar_password": "senha123",
         },
         follow_redirects=True,
     )
@@ -68,7 +55,7 @@ def test_registo_email_duplicado(client):
             "nome": "Outro Utilizador",
             "email": "existente@email.com",
             "password": "senha123",
-            "confirmar_password": "senha123",  # <- nome corrigido
+            "confirmar_password": "senha123",
         },
         follow_redirects=True,
     )

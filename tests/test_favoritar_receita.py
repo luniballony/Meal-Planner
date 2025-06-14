@@ -4,43 +4,31 @@ test_favoritar_receita.py
 Testa adicionar e remover uma receita dos favoritos de um utilizador autenticado.
 """
 
-import sys
-import os
 import pytest
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from app import create_app, db
 from app.models.user import User
 from app.models.recipe import Recipe
 from app.models.category import Category
 from app.models.favorites import Favorites
+from app import db
 
 
-@pytest.fixture
-def client():
-    app = create_app()
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    app.config["WTF_CSRF_ENABLED"] = False
+@pytest.fixture(autouse=True)
+def setup_dados(client):
+    """
+    Prepara utilizador, categoria, receita e faz login.
+    """
+    with client.application.app_context():
 
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-
-        # Criar utilizador
         utilizador = User(
             nome="Utilizador Favorito", email="favorito@email.com", nivel=1
         )
         utilizador.set_password("senha123")
         db.session.add(utilizador)
 
-        # Criar categoria
         categoria = Category(nome="Sopas")
         db.session.add(categoria)
         db.session.commit()
 
-        # Criar receita
         receita = Recipe(
             titulo="Sopa Teste",
             descricao="Deliciosa sopa de teste",
@@ -58,14 +46,12 @@ def client():
         db.session.add(receita)
         db.session.commit()
 
-    with app.test_client() as client:
         # Login
         client.post(
             "/auth/login",
             data={"email": "favorito@email.com", "password": "senha123"},
             follow_redirects=True,
         )
-        yield client
 
 
 def test_adicionar_remover_favorito(client):
@@ -78,8 +64,9 @@ def test_adicionar_remover_favorito(client):
     assert "Receita adicionada aos favoritos" in response_add.get_data(as_text=True)
 
     # Confirmar na BD
-    favorito = Favorites.query.filter_by(receita_id=1, utilizador_id=1).first()
-    assert favorito is not None
+    with client.application.app_context():
+        favorito = Favorites.query.filter_by(receita_id=1, utilizador_id=1).first()
+        assert favorito is not None
 
     # Remover favorito
     response_remove = client.post("/favorites/remover/1", follow_redirects=True)
@@ -87,5 +74,6 @@ def test_adicionar_remover_favorito(client):
     assert "Receita removida dos favoritos" in response_remove.get_data(as_text=True)
 
     # Confirmar remoção
-    favorito = Favorites.query.filter_by(receita_id=1, utilizador_id=1).first()
-    assert favorito is None
+    with client.application.app_context():
+        favorito = Favorites.query.filter_by(receita_id=1, utilizador_id=1).first()
+        assert favorito is None

@@ -4,28 +4,8 @@ test_rotas_protegidas_anonimo.py
 Testa se utilizadores não autenticados são redirecionados ao tentar aceder a rotas protegidas.
 """
 
-import sys
-import os
 import pytest
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from app import create_app, db
-
-
-@pytest.fixture
-def client():
-    app = create_app()
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    app.config["WTF_CSRF_ENABLED"] = False
-
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-
-    with app.test_client() as client:
-        yield client
+from app import db
 
 
 @pytest.mark.parametrize(
