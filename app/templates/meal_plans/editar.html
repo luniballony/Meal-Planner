@@ -46,7 +46,7 @@
                 </td>
                 {% for refeicao in ['pequeno_almoço', 'almoço', 'jantar'] %}
                 <td>
-                  <select name="{{ dia.data.strftime('%Y-%m-%d') }}_{{ refeicao }}" class="meal-select">
+                  <select name="{{ dia.data.strftime('%Y-%m-%d') }}-{{ refeicao }}" class="meal-select">
                     <option value="">-- Escolher --</option>
                     {% for receita in receitas %}
                       <option value="{{ receita.id }}"
