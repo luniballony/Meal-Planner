@@ -232,10 +232,11 @@ def apagar_receita(receita_id):
         flash("Acesso restrito a administradores.", "danger")
         return redirect(url_for("main.home"))
 
-    if eliminar_receita(receita_id):
+    sucesso, mensagem = eliminar_receita(receita_id)
+    if sucesso:
         flash("Receita eliminada com sucesso.", "success")
     else:
-        flash("Erro ao eliminar a receita.", "danger")
+        flash(mensagem or "Erro ao eliminar a receita.", "danger")
 
     return redirect(request.referrer or url_for("admin.listar_receitas"))
 

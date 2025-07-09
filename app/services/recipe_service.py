@@ -3,6 +3,7 @@ from app.db import db
 from app.models import BlockedRecipe
 from sqlalchemy import or_, select
 from flask import session
+from app.models.meal_plan import MealEntry
 
 
 def criar_receita(dados, utilizador_id, publica_quando_aprovada=False):
@@ -48,12 +49,19 @@ def aprovar_receita(receita_id):
 
 
 def eliminar_receita(receita_id):
+    # Verifica se existe MealEntry associada à receita
+    existe_referencia = MealEntry.query.filter_by(receita_id=receita_id).first()
+    if existe_referencia:
+        return (
+            False,
+            "Não é possível eliminar a receita porque está associada a um ou mais planos semanais.",
+        )
     receita = db.session.get(Recipe, receita_id)
     if receita:
         db.session.delete(receita)
         db.session.commit()
-        return True
-    return False
+        return True, None
+    return False, "Receita não encontrada."
 
 
 def listar_receitas():
