@@ -71,20 +71,25 @@ def listar_receitas():
     query = Recipe.query
 
     if nivel == 3:
+        # Admin vê todas
         return query.order_by(Recipe.data_submetida.desc()).all()
 
     if user_id:
+        # Utilizador: públicas ou as suas próprias (mesmo privadas)
         query = query.filter(
             or_(Recipe.publicada == True, Recipe.utilizador_id == user_id)
         )
 
-        # Corrigido: usar select() explicitamente para evitar o warning
+        # Bloqueadas: subquery de receitas bloqueadas
         subquery = select(BlockedRecipe.receita_id).where(
             BlockedRecipe.utilizador_id == user_id
         )
 
-        return db.session.query(Recipe).filter(~Recipe.id.in_(subquery)).all()
+        query = query.filter(~Recipe.id.in_(subquery))
+
+        return query.order_by(Recipe.data_submetida.desc()).all()
     else:
+        # Visitante: só públicas
         query = query.filter_by(publicada=True)
 
     return query.order_by(Recipe.data_submetida.desc()).all()
