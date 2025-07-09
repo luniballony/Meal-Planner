@@ -1,14 +1,5 @@
 {% extends "base.html" %} {% block title %}Plano Semanal{% endblock %} {% block
-content %} {% with messages = get_flashed_messages(with_categories=true) %} {%
-if messages %} {% for category, message in messages %}
-<div
-  class="alert alert-{{ category }}"
-  role="alert"
-  style="margin-bottom: 15px"
->
-  {{ message }}
-</div>
-{% endfor %} {% endif %} {% endwith %}
+content %}
 
 <div class="meal-plan-view-container">
   <div class="meal-plan-view-header">
@@ -57,11 +48,10 @@ if messages %} {% for category, message in messages %}
   <div class="meal-plan-summary">
     <div class="summary-item">
       <i class="fas fa-calendar-day"></i>
-      <span
-        >{{
-        plano.refeicoes|selectattr('data_refeicao')|map(attribute='data_refeicao')|unique|list|length
-        }} dias</span
-      >
+      <span>
+        {{ plano.refeicoes | selectattr('data_refeicao') |
+        map(attribute='data_refeicao') | unique | list | length }} dias
+      </span>
     </div>
     <div class="summary-item">
       <i class="fas fa-utensils"></i>
@@ -69,10 +59,10 @@ if messages %} {% for category, message in messages %}
     </div>
     <div class="summary-item">
       <i class="fas fa-clock"></i>
-      <span
-        >{{ plano.data_inicio.strftime('%d/%m') }} - {{ (plano.data_inicio +
-        timedelta(days=6)).strftime('%d/%m/%Y') }}</span
-      >
+      <span>
+        {{ plano.data_inicio.strftime('%d/%m') }} - {{ (plano.data_inicio +
+        timedelta(days=6)).strftime('%d/%m/%Y') }}
+      </span>
     </div>
   </div>
 
@@ -119,15 +109,15 @@ if messages %} {% for category, message in messages %}
             <div class="recipe-title">{{ entrada.receita.titulo }}</div>
             <div class="recipe-meta">
               {% if entrada.receita.tempo_preparacao %}
-              <span class="meta-item"
-                ><i class="fas fa-clock"></i> {{
-                entrada.receita.tempo_preparacao }} min</span
-              >
+              <span class="meta-item">
+                <i class="fas fa-clock"></i> {{ entrada.receita.tempo_preparacao
+                }} min
+              </span>
               {% endif %} {% if entrada.receita.dificuldade %}
-              <span class="meta-item"
-                ><i class="fas fa-chart-line"></i> {{
-                entrada.receita.dificuldade }}</span
-              >
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i> {{ entrada.receita.dificuldade
+                }}
+              </span>
               {% endif %}
             </div>
           </a>
