@@ -1,5 +1,15 @@
 {% extends "base.html" %} {% block title %}Plano Semanal{% endblock %} {% block
-content %}
+content %} {% with messages = get_flashed_messages(with_categories=true) %} {%
+if messages %} {% for category, message in messages %}
+<div
+  class="alert alert-{{ category }}"
+  role="alert"
+  style="margin-bottom: 15px"
+>
+  {{ message }}
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
 <div class="meal-plan-view-container">
   <div class="meal-plan-view-header">
     <div class="header-content">

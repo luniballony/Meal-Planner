@@ -170,7 +170,21 @@ def exportar_pdf(plano_id):
         flash("Plano não encontrado ou acesso negado.", "danger")
         return redirect(url_for("meal_plans.meus_planos"))
 
-    pdf_bytes = exportar_plano_para_pdf(plano)
+    try:
+        pdf_bytes = exportar_plano_para_pdf(plano)
+    except OSError:
+        flash(
+            "Exportação para PDF não está disponível nesta plataforma (Railway), devido a incompatibilidade técnica com a biblioteca PDFKit.",
+            "warning",
+        )
+        return redirect(url_for("meal_plans.ver", plano_id=plano_id))
+    except Exception as e:
+        flash(
+            f"Ocorreu um erro ao exportar o PDF: {str(e)}",
+            "danger",
+        )
+        return redirect(url_for("meal_plans.ver", plano_id=plano_id))
+
     return send_file(
         BytesIO(pdf_bytes),
         as_attachment=True,
