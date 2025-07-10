@@ -174,7 +174,7 @@ def exportar_pdf(plano_id):
         pdf_bytes = exportar_plano_para_pdf(plano)
     except OSError:
         flash(
-            "Exportação para PDF não está disponível nesta plataforma (Railway), devido a incompatibilidade técnica com a biblioteca PDFKit.",
+            "Exportação para PDF ainda não está disponível nesta plataforma (Railway), devido a incompatibilidade técnica com a biblioteca PDFKit.",
             "warning",
         )
         return redirect(url_for("meal_plans.ver", plano_id=plano_id))
